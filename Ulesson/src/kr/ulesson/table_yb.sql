@@ -15,7 +15,7 @@ CREATE TABLE mylesson (
     CONSTRAINT fk_mem_id_01 FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id),
     ml_progress NUMBER(3) NOT NULL
 );
-
+ 
 CREATE TABLE point (
     pt_num NUMBER NOT NULL, 
     PRIMARY KEY(pt_num),
@@ -24,3 +24,4 @@ CREATE TABLE point (
     pt_chng_date DATE DEFAULT SYSDATE NOT NULL,
     pt_value NUMBER NOT NULL
 );
+   
