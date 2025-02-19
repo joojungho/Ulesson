@@ -54,8 +54,8 @@ create table section(
 	sec_mdate date,
 	FOREIGN KEY (les_num) REFERENCES lesson(les_num)
 );
-
+ 
 create sequence sc_seq
 start with 1
 increment by 1
-maxvalue 1000000;
+maxvalue 1000000;;
