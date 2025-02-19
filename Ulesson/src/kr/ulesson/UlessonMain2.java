@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class UlessonMain1 {
+public class UlessonMain2 {
 	private BufferedReader br;
 	private String me_id; // 로그인한 아이디 저장
 	private boolean flag; // 로그인 여부
 	
-	public UlessonMain1() {
+	public UlessonMain2() {
 		try {
 			br = new BufferedReader(new InputStreamReader(System.in));
 			//메뉴 호출
@@ -60,7 +60,7 @@ public class UlessonMain1 {
 		}
 	}
 	public static void main(String[] args) {
-		new UlessonMain1();
+		new UlessonMain2();
 	}
 
 }
