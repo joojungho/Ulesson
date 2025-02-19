@@ -3,11 +3,11 @@ CREATE TABLE board (
     mem_id VARCHAR2(12) NOT NULL,
     bd_content VARCHAR2(300),
     bd_category NUMBER NOT NULL,
-    bd_date DATE NOT NULL,
+    bd_date DATE default sysdate NOT NULL,
     bd_mdate DATE,
     bd_recommend NUMBER(3) NOT NULL,
     FOREIGN KEY (mem_id) REFERENCES member(mem_id),
-    FOREIGN KEY (bd_category) REFERENCES category(ct_num)
+    FOREIGN KEY (bd_category) REFERENCES bd_category(ct_num)
 );
 
 create sequence bd_seq
@@ -19,7 +19,7 @@ maxvalue 100000;
 	cmt_num number not null primary key,
 	mem_id varchar2(30) not null,
 	cmt_content varchar2(300),
-	cmt_date date not null,
+	cmt_date date default sysdate not null,
 	cmt_mdate date,
 	foreign key (mem_id) references member(mem_id)
 	);
@@ -37,4 +37,4 @@ maxvalue 100000;
 create sequence bd_ct_seq
 start with 1
 increment by 1
-maxvalue 100000;
+maxvalue 1123456;
