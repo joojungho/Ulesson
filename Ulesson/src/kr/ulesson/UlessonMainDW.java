@@ -29,10 +29,11 @@ public class UlessonMainDW {
 			try {
 				int no = Integer.parseInt(br.readLine());
 				if (no == 1) {
-					
+					//로그인
 				} else if (no == 2){
-					
+					//회원가입
 				} else if (no == 3) {
+					//종료
 					break;
 				} else {
 					System.out.println("잘못 입력했습니다.");
@@ -41,6 +42,7 @@ public class UlessonMainDW {
 				System.out.println("[숫자만 입력 가능]");
 			}
 		}
+		
 		//로그인 성공 후 회원제 서비스 영역
 		while(flag) {
 			System.out.println("1.상품목록 2.MY구매상품리스트 3.종료");
@@ -59,8 +61,8 @@ public class UlessonMainDW {
 			}
 		}
 	}
-	public static void main(String[] args) {
-		new UlessonMainDW();
-	}
+//	public static void main(String[] args) {
+//		new UlessonMainDW();
+//	}
 
 }

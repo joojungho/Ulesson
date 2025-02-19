@@ -97,6 +97,7 @@ public class UlessonMainYB {
 		}
 	}
 
+
 	// 권용범 작성 공지사항
 	// 공지 목록을 조회하고 새로운 공지를 작성하는 메소드
 	private void showNotice() {
@@ -417,8 +418,12 @@ public class UlessonMainYB {
 		}
 	}	
 
-	public static void main(String[] args) {
-		new UlessonMainYB();
-	}
+	
+
+
+//	public static void main(String[] args) {
+//		new UlessonMainYB();
+//	}
+
 
 }

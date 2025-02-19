@@ -41,7 +41,7 @@ create table wishlist(
   start with 1
   increment by 1
   maxvalue 1000000;
-  
+     
  create table notice(
   nt_num number primary key,
   nt_content varchar2(600),

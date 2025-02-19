@@ -8,11 +8,14 @@ public class UlessonMainJH {
 	private BufferedReader br;
 	private String me_id; // 로그인한 아이디 저장
 	private boolean flag; // 로그인 여부
-	
+	LessonDAO dao;
+	CategoryDAO ctdao;
 	public UlessonMainJH() {
 		try {
 			br = new BufferedReader(new InputStreamReader(System.in));
 			//메뉴 호출
+			dao = new LessonDAO();
+			ctdao = new CategoryDAO();
 			callMenu();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -29,7 +32,12 @@ public class UlessonMainJH {
 			try {
 				int no = Integer.parseInt(br.readLine());
 				if (no == 1) {
-					
+					//dao.updateLesson("수정 테스트", "주정호", 123456 , "강의 수정 테스트용 디테일내용", 120, "테스트",0);
+					//dao.selectLessonByCategory("테스트");
+//					dao.selectLessonSearch("수정");
+//					dao.selectLessonSearch("주정");
+//					dao.selectLessonSearch("정");
+					ctdao.insertCategory("웹 개발", null);
 				} else if (no == 2){
 					
 				} else if (no == 3) {
