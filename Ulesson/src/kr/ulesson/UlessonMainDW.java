@@ -59,8 +59,8 @@ public class UlessonMainDW {
 			}
 		}
 	}
-	public static void main(String[] args) {
-		new UlessonMainDW();
-	}
+//	public static void main(String[] args) {
+//		new UlessonMainDW();
+//	}
 
 }

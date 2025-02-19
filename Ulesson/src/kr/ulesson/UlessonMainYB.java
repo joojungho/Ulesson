@@ -59,8 +59,8 @@ public class UlessonMainYB {
 			}
 		}
 	}
-	public static void main(String[] args) {
-		new UlessonMainYB();
-	}
+//	public static void main(String[] args) {
+//		new UlessonMainYB();
+//	}
 
 }

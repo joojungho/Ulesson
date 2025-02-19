@@ -59,8 +59,8 @@ public class UlessonMainCH {
 			}
 		}
 	}
-	public static void main(String[] args) {
-		new UlessonMainCH();
-	}
+//	public static void main(String[] args) {
+//		new UlessonMainCH();
+//	}
 
 }
