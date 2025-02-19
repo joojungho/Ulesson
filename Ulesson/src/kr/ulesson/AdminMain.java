@@ -1,0 +1,127 @@
+package kr.ulesson;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+
+public class AdminMain {
+    private BufferedReader br;
+    private MemberDAO dao;
+    private boolean isAdminLoggedIn;
+
+    public AdminMain() {
+        try {
+            br = new BufferedReader(new InputStreamReader(System.in));
+            dao = new MemberDAO();
+            adminMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) br.close();
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    private void adminMenu() throws IOException {
+        System.out.println("=== 관리자 로그인 ===");
+        System.out.print("관리자 ID >> ");
+        String adminId = br.readLine();
+        System.out.print("비밀번호 >> ");
+        String adminPw = br.readLine();
+
+        if (dao.adminLogin(adminId, adminPw)) {
+            isAdminLoggedIn = true;
+            System.out.println("관리자 로그인 성공!");
+        } else {
+            System.out.println("관리자 로그인 실패. 프로그램 종료.");
+            return;
+        }
+
+        while (isAdminLoggedIn) {
+            System.out.println("\n=== 관리자 메뉴 ===");
+            System.out.println("1. 회원 목록 조회");
+            System.out.println("2. 회원 삭제");
+            System.out.println("3. 회원 권한 변경");
+            System.out.println("4. 로그아웃");
+            System.out.print("선택 >> ");
+
+            try {
+                int choice = Integer.parseInt(br.readLine());
+                switch (choice) {
+                    case 1:
+                        listAllMembers();
+                        break;
+                    case 2:
+                    	listAllMembers(); //삭제 할 회원 먼저 보여주기
+                        deleteMember(); //삭제 할 회원 정하기
+                        break;
+                    case 3:
+                    	listAllMembers(); //변경할 회원 먼저 보여주기
+                        changeMemberAuth();
+                        break;
+                    case 4:
+                        logout();
+                        break;
+                    default:
+                        System.out.println("잘못 입력했습니다. 다시 선택하세요.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("[숫자만 입력 가능]");
+            }
+        }
+    }
+
+    // 회원 목록 출력
+    private void listAllMembers() {
+        System.out.println("\n=== 회원 목록 ===");
+        List<String> members = dao.getAllMembers();
+        for (String member : members) {
+            System.out.println(member);
+        }
+    }
+
+    // 회원 삭제
+    private void deleteMember() throws IOException {
+        System.out.print("\n삭제할 회원 ID 입력 (취소: 0) >> ");
+        String mem_id = br.readLine();
+        if (mem_id.equals("0")) return;
+
+        if (dao.deleteMember(mem_id)) {
+            System.out.println(mem_id + " 회원이 삭제되었습니다.");
+        } else {
+            System.out.println("회원 삭제 실패. 다시 시도하세요.");
+        }
+    }
+
+    // 회원 권한 변경
+    private void changeMemberAuth() throws IOException {
+        System.out.print("\n권한을 변경할 회원 ID 입력 (취소: 0) >> ");
+        String mem_id = br.readLine();
+        if (mem_id.equals("0")) return;
+
+        System.out.print("변경할 권한 (1: 일반회원, 9: 관리자) >> ");
+        int newAuth = Integer.parseInt(br.readLine());
+
+        if (dao.updateMemberAuth(mem_id, newAuth)) {
+            System.out.println(mem_id + " 회원의 권한이 변경되었습니다.");
+        } else {
+            System.out.println("권한 변경 실패. 다시 시도하세요.");
+        }
+    }
+    
+
+
+    // 로그아웃
+    private void logout() {
+        isAdminLoggedIn = false;
+        System.out.println("관리자 로그아웃되었습니다.");
+    }
+
+    public static void main(String[] args) {
+        new AdminMain();
+    }
+}
