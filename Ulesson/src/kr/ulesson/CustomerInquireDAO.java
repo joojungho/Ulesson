@@ -8,7 +8,7 @@ import kr.util.DBUtil;
 
 public class CustomerInquireDAO {
 
-    // 모든 문의글 조회
+    // 모든 문의글 보기
     public List<CustomerInquire> getInquires() throws ClassNotFoundException {
         List<CustomerInquire> inquiries = new ArrayList<>();
         String sql = "SELECT IQ_NUM, IQ_CATE, IQ_CONTENT, MEM_ID, IQ_DATE, IQ_MDATE, RS_CONTENT, RS_DATE FROM CUSTOMER_INQUIRE";
@@ -36,7 +36,38 @@ public class CustomerInquireDAO {
 
         return inquiries;
     }
+    
+    // 내 문의내역 보기
+    public List<CustomerInquire> getMyInquires(String memId) throws ClassNotFoundException, SQLException {
+        List<CustomerInquire> inquiries = new ArrayList<>();
+        String sql = "SELECT IQ_NUM, IQ_CATE, IQ_CONTENT, MEM_ID, IQ_DATE, IQ_MDATE, RS_CONTENT, RS_DATE "
+        		+ "FROM CUSTOMER_INQUIRE WHERE MEM_ID = ?";
 
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            // MEM_ID 파라미터 설정
+            pstmt.setString(1, memId);
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                // 결과를 CustomerInquire 객체로 변환하여 리스트에 추가
+                int iqNum = rs.getInt("IQ_NUM");
+                String iqCate = rs.getString("IQ_CATE");
+                String iqContent = rs.getString("IQ_CONTENT");
+                String memIdResult = rs.getString("MEM_ID");
+                Date iqDate = rs.getDate("IQ_DATE");
+                Date iqMDate = rs.getDate("IQ_MDATE");
+                String rsContent = rs.getString("RS_CONTENT");
+                Date rsDate = rs.getDate("RS_DATE");
+
+                CustomerInquire inquire = new CustomerInquire(iqNum, iqCate, iqContent, memIdResult, iqDate, iqMDate, rsContent, rsDate);
+                inquiries.add(inquire);
+            }
+        }
+        return inquiries;
+    }
     // 문의글 작성
     public boolean addInquiry(CustomerInquire inquire) throws ClassNotFoundException {
         String sql = "INSERT INTO CUSTOMER_INQUIRE (IQ_NUM, IQ_CATE, IQ_CONTENT, MEM_ID) VALUES (IQ_SEQ.NEXTVAL, ?, ?, ?)";
@@ -67,6 +98,24 @@ public class CustomerInquireDAO {
             pstmt.setString(1, inquire.getIqCate());
             pstmt.setString(2, inquire.getIqContent());
             pstmt.setInt(3, inquire.getIqNum());
+            
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // 문의글 삭제
+    public boolean deleteInquiry(int iqNum) throws ClassNotFoundException {
+        String sql = "DELETE FROM CUSTOMER_INQUIRE WHERE IQ_NUM = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, iqNum);
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -77,34 +126,36 @@ public class CustomerInquireDAO {
         return false;
     }
 
-    // 답변 조회
-    public String getAnswer(int iqNum) throws ClassNotFoundException {
-        String sql = "SELECT RS_CONTENT FROM CUSTOMER_INQUIRE WHERE IQ_NUM = ?";
 
+    // 답변 조회
+    public List<String> getAnswers(String memId) throws ClassNotFoundException {
+        String sql = "SELECT RS_CONTENT FROM CUSTOMER_INQUIRE WHERE MEM_ID = ? AND RS_CONTENT IS NOT NULL";
+
+        List<String> answers = new ArrayList<>();
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, iqNum);
+            pstmt.setString(1, memId);  // memId를 바인딩
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                return rs.getString("RS_CONTENT");
+            // 여러 개의 답변을 List에 저장
+            while (rs.next()) {
+                answers.add(rs.getString("RS_CONTENT"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return answers;
     }
 
+
+ 
  // 답변 작성 (관리자만 가능)
- // 답변 작성 (관리자만 가능)
-    public boolean addAnswer(int iqNum, String rsContent) throws ClassNotFoundException {
-        // rsContent가 null이거나 빈 값이라면 null 설정
+    public boolean addAnswer(int iqNum, String rsContent) throws ClassNotFoundException {        
         if (rsContent == null || rsContent.trim().isEmpty()) {
             rsContent = null;  // null 값 설정
         }
-
-        // 답변을 작성하고 RS_DATE에 SYSDATE를 삽입
+        
         String sql = "UPDATE CUSTOMER_INQUIRE SET RS_CONTENT = ?, RS_DATE = SYSDATE WHERE IQ_NUM = ?";
 
         try (Connection conn = DBUtil.getConnection();
@@ -121,6 +172,5 @@ public class CustomerInquireDAO {
         }
         return false;
     }
-
-
+    
 }

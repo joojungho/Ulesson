@@ -3,6 +3,8 @@ package kr.ulesson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +26,7 @@ public class UlessonMainYB {
 	}
 
 	//메뉴 호출
-	private void callMenu() throws IOException, ClassNotFoundException{
+	private void callMenu() throws IOException, ClassNotFoundException, SQLException{
 		//로그인 체크 영역
 		while(true) {
 			System.out.print("1.로그인 2.회원가입 3.종료");
@@ -184,129 +186,262 @@ public class UlessonMainYB {
 		}
 	}
 
-	// 프로그램 시작
+	// 공지 프로그램 시작
 	public static void notice(String[] args) throws IOException {
 		UlessonMainYB main = new UlessonMainYB();
 		main.callNoticeMenu();  // 메뉴 실행
 	}
 
 	// 권용범 작성 고객문의사항(고객센터)
-	
 
-    public void showCustomerInquire() throws ClassNotFoundException {
-    	CustomerInquireDAO dao = new CustomerInquireDAO();
-        Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            System.out.println("1. 모든 문의글 조회");
-            System.out.println("2. 문의글 작성");
-            System.out.println("3. 문의글 수정");
-            System.out.println("4. 답변 조회");
-            System.out.println("5. 답변 작성");
-            System.out.println("6. 종료");
-            System.out.print("옵션을 선택하세요: ");
+	public void showCustomerInquire() throws ClassNotFoundException, SQLException {
+		CustomerInquireDAO dao = new CustomerInquireDAO();
+		Scanner scanner = new Scanner(System.in);
 
-            int option = scanner.nextInt();
-            scanner.nextLine();  // 버퍼 비우기 (nextInt 후 nextLine() 호출 필수)
+		while (true) {
+			System.out.println("1. 모든 문의글 보기");
+			System.out.println("2. 내 문의내역 보기");
+			System.out.println("3. 문의글 작성");
+			System.out.println("4. 문의글 수정");
+			System.out.println("5. 답변 조회");
+			System.out.println("6. 답변 작성");
+			System.out.println("7. 뒤로가기");
+			System.out.println("8. 종료");
+			System.out.print("옵션을 선택하세요: ");
 
-            switch (option) {
-                case 1:  // 모든 문의글 조회
-                    List<CustomerInquire> inquiries = dao.getInquires();
-                    if (inquiries.isEmpty()) {
-                        System.out.println("조회된 문의글이 없습니다.");
-                    } else {
-                        for (CustomerInquire inquiry : inquiries) {
-                            System.out.println(inquiry);
-                        }
-                    }
-                    break;
+			int option = scanner.nextInt();
+			scanner.nextLine();  // 버퍼 비우기
 
-                case 2:  // 문의글 작성
-                    System.out.print("문의글 항목을 입력하세요: ");
-                    String iqCate = scanner.nextLine();
+			if (option == 1) {  // 모든 문의글 보기
+				while(true) {
+					List<CustomerInquire> inquiries = dao.getInquires();
+					if (inquiries.isEmpty()) {
+						System.out.println("조회된 문의글이 없습니다.");
+					} else {
+						for (CustomerInquire inquiry : inquiries) {
+							System.out.println(inquiry);
+						}
+					}
 
-                    System.out.print("문의글 내용을 입력하세요: ");
-                    String iqContent = scanner.nextLine();
+					// 뒤로가기
+					System.out.println("1. 뒤로가기");
+					System.out.println("2. 종료");
+					System.out.print("옵션을 선택하세요");
+					int subOption = scanner.nextInt();
+					scanner.nextLine();
 
-                    System.out.print("작성자 ID를 입력하세요: ");
-                    String memId = scanner.nextLine();
+					if (subOption == 1) {
+						break;
+					} else if (subOption == 2){
+						return;
+					} else {
+						System.out.println("잘못된 입력입니다. 다시 입력하세요");
+					}
+				}
+			} 
+			else if (option == 2) { // 내 문의내역 보기
+				while(true) {
+					System.out.println("1. 내 문의내역 보기");
+					System.out.println("2. 뒤로가기");
+					System.out.println("3. 종료");
+					System.out.print("옵션을 선택하세요: ");
+					int subOption = scanner.nextInt();
+					scanner.nextLine();
 
-                    CustomerInquire newInquiry = new CustomerInquire(0, iqCate, iqContent, memId, null, null, null, null);
-                    boolean isAdded = dao.addInquiry(newInquiry);
-                    if (isAdded) {
-                        System.out.println("새로운 문의글이 작성되었습니다.");
-                    } else {
-                        System.out.println("문의글 작성에 실패했습니다.");
-                    }
-                    break;
+					if(subOption == 1) {
+						List<CustomerInquire> inquiries = dao.getMyInquires(mem_id);
+						if (inquiries.isEmpty()) {
+							System.out.println("조회된 문의글이 없습니다.");
+						} else {
+							for (CustomerInquire inquiry : inquiries) {
+								System.out.println(inquiry);							
+							}
+							break;
+						}
+					}	else if(subOption == 2) {
+						break;
+					} else if(subOption == 3) {
+						return;
+					} else {
+						System.out.println("잘못된 입력입니다. 다시 입력하세요");
+					}
+				}
+			}
+			else if (option == 3) {  // 문의글 작성
+				while(true) {					 
+					System.out.println("1. 문의글 작성");
+					System.out.println("2. 뒤로가기");
+					System.out.println("3. 종료");
+					System.out.print("옵션을 선택하세요: ");
+					int subOption = scanner.nextInt();
+					scanner.nextLine();
 
-                case 3:  // 문의글 수정
-                    System.out.print("수정할 문의글 번호를 입력하세요: ");
-                    int iqNumToUpdate = scanner.nextInt();
-                    scanner.nextLine();  // 버퍼 비우기
+					if (subOption == 1) {
+						System.out.print("문의글 항목을 입력하세요: ");
+						String iqCate = scanner.nextLine();
 
-                    System.out.print("수정할 문의글 항목을 입력하세요: ");
-                    String updatedIqCate = scanner.nextLine();
+						System.out.print("문의글 내용을 입력하세요: ");
+						String iqContent = scanner.nextLine();
 
-                    System.out.print("수정할 문의글 내용을 입력하세요: ");
-                    String updatedIqContent = scanner.nextLine();
+						System.out.print("작성자 ID를 입력하세요: ");
+						String memId = scanner.nextLine();
 
-                    CustomerInquire updatedInquiry = new CustomerInquire(iqNumToUpdate, updatedIqCate, updatedIqContent, null, null, null, null, null);
-                    boolean isUpdated = dao.updateInquiry(updatedInquiry);
-                    if (isUpdated) {
-                        System.out.println("문의글이 수정되었습니다.");
-                    } else {
-                        System.out.println("문의글 수정에 실패했습니다.");
-                    }
-                    break;
+						CustomerInquire newInquiry = new CustomerInquire(0, iqCate, iqContent, memId, null, null, null, null);
+						boolean isAdded = dao.addInquiry(newInquiry);
+						if (isAdded) {
+							System.out.println("새로운 문의글이 작성되었습니다.");
+						} else {
+							System.out.println("문의글 작성에 실패했습니다.");
+						}
+					} else if (subOption == 2){
+						break;
+					} else if (subOption == 3){
+						return;
+					} else{
+						System.out.println("잘못된 입력입니다. 다시 입력하세요");
+					}
+				}
+			} 
+			else if (option == 4) {  // 문의글 수정 및 삭제
+				while(true) {
+					System.out.println("1. 문의글 수정");
+					System.out.println("2. 문의글 삭제");
+					System.out.println("3. 뒤로가기");
+					System.out.println("4. 종료");
+					System.out.print("옵션을 선택하세요: ");
+					int subOption = scanner.nextInt();
+					scanner.nextLine();
 
-                case 4:  // 답변 조회
-                    System.out.print("답변을 조회할 문의글 번호를 입력하세요: ");
-                    int iqNumToViewAnswer = scanner.nextInt();
-                    scanner.nextLine();  // 버퍼 비우기
+					if (subOption == 1) { // 문의글 수정
+						System.out.print("수정할 문의글 번호를 입력하세요: ");
+						int iqNumToUpdate = scanner.nextInt();
+						scanner.nextLine();
 
-                    String answer = dao.getAnswer(iqNumToViewAnswer);
-                    if (answer != null) {
-                        System.out.println("답변 내용: " + answer);
-                    } else {
-                        System.out.println("답변이 없습니다.");
-                    }
-                    break;
+						System.out.print("수정할 문의글 항목을 입력하세요: ");
+						String updatedIqCate = scanner.nextLine();
 
-                case 5:  // 답변 작성
-                    System.out.print("답변을 작성할 문의글 번호를 입력하세요: ");
-                    int iqNumToAnswer = scanner.nextInt();
-                    scanner.nextLine();  // 버퍼 비우기
+						System.out.print("수정할 문의글 내용을 입력하세요: ");
+						String updatedIqContent = scanner.nextLine();
 
-                    System.out.print("답변 내용을 입력하세요: ");
-                    String rsContent = scanner.nextLine();
+						CustomerInquire updatedInquiry = new CustomerInquire(iqNumToUpdate, updatedIqCate, updatedIqContent, null, null, null, null, null);
+						boolean isUpdated = dao.updateInquiry(updatedInquiry);
+						if (isUpdated) {
+							System.out.println("문의글이 수정되었습니다.");
+						} else {
+							System.out.println("문의글 수정에 실패했습니다.");
+						}
+					} else if(subOption == 2) { // 문의글 삭제						 
+						System.out.print("삭제할 문의글 번호를 입력하세요: ");
+						int iqNumToDelete = scanner.nextInt();
+						scanner.nextLine();  // 버퍼 비우기
 
-                    System.out.print("관리자 ID를 입력하세요: ");
-                    String adminId = scanner.nextLine();
+						boolean isDeleted = dao.deleteInquiry(iqNumToDelete);
+						if (isDeleted) {
+							System.out.println("문의글이 삭제되었습니다.");
+						} else {
+							System.out.println("문의글 삭제에 실패했습니다.");
+						}
+					} else if(subOption == 3) { // 뒤로가기
+						break;
+					} else if(subOption == 4) { // 종료
+						return;
+					} else {
+						System.out.println("잘못된 입력입니다. 다시 입력하세요");						
+					}
+				}
+			}
+			else if (option == 5) {  // 답변 조회
+				while(true) {
+					// 옵션 선택
+					System.out.println("1. 답변 조회");					
+					System.out.println("2. 뒤로가기");
+					System.out.println("3. 종료");
+					System.out.print("옵션을 선택하세요: ");
+					int subOption = scanner.nextInt();
+					scanner.nextLine();
+					if(subOption == 1) {
+						dao = new CustomerInquireDAO();		        
+						try {
+							// 로그인한 mem_id를 사용하여 답변을 조회
+							List<String> answers = dao.getAnswers(mem_id);
 
-                    // 관리자인지 확인 (예시: admin만 가능)
-                    if ("admin".equals(adminId)) {
-                        boolean isAnswered = dao.addAnswer(iqNumToAnswer, rsContent);
-                        if (isAnswered) {
-                            System.out.println("답변이 작성되었습니다.");
-                        } else {
-                            System.out.println("답변 작성에 실패했습니다.");
-                        }
-                    } else {
-                        System.out.println("관리자만 답변을 작성할 수 있습니다.");
-                    }
-                    break;
+							// 등록된 답변이 없을 경우 처리
+							if (answers.isEmpty()) {
+								System.out.println("등록된 답변이 없습니다.");
+							} else {
+								// 등록된 답변이 있을 경우 모두 출력
+								System.out.println("문의에 등록된 모든 답변:");
+								for (String answer : answers) {
+									System.out.println(answer);
+								}
+							}
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}						
+					} else if (subOption == 2) {
+						break; // 뒤로가기
+					} else if (subOption == 3) {
+						return; // 종료
+					} else {
+						System.out.println("잘못된 입력입니다. 다시 입력하세요");
+					}
+				}
 
-                case 6:  // 종료
-                    System.out.println("프로그램을 종료합니다.");
-                    return;
+			} else if (option == 6) {  // 답변 작성, 관리자만 가능하도록 조건 설정(mem_id = admin)
+				while(true) {
+					// 옵션 선택
+					System.out.println("1. 답변작성");					
+					System.out.println("2. 뒤로가기");
+					System.out.println("3. 종료");
+					System.out.print("옵션을 선택하세요: ");
+					int subOption = scanner.nextInt();
+					scanner.nextLine();
 
-                default:
-                    System.out.println("잘못된 선택입니다. 다시 시도해주세요.");
-            }
-            break;
-        }
-    }
+					if (subOption == 1) {
+						System.out.print("답변을 작성할 문의글 번호를 입력하세요: ");
+						int iqNumToAnswer = scanner.nextInt();
+						scanner.nextLine();
+
+						// 답변 작성
+						System.out.print("답변 내용을 입력하세요: ");
+						String rsContent = scanner.nextLine();
+
+						// 관리자 ID입력
+						System.out.print("관리자 ID를 입력하세요: ");
+						String adminId = scanner.nextLine();
+
+						// 관리자 ID 일치하는지 확인
+						if ("admin".equals(adminId)) {
+							boolean isAnswered = dao.addAnswer(iqNumToAnswer, rsContent);
+							if (isAnswered) {
+								System.out.println("답변이 작성되었습니다.");
+							} else {
+								System.out.println("답변 작성에 실패했습니다."); // 문의글 번호나 내용이 유효하지 않을때
+							}
+						} else {
+							System.out.println("권한이 없습니다."); // 관리자 ID 불일치
+						}
+						break;
+					} else if (subOption == 2){
+						break;
+					} else if (subOption == 3){
+						return;
+					} else {
+						System.out.println("잘못된 입력입니다. 다시 입력하세요");
+					}
+				}
+			} else if (option == 7) {  // 뒤로가기				
+				break;
+			} else if(option == 8) { // 종료
+				System.out.println("프로그램을 종료합니다.");
+				return;
+			} else {  // 잘못 입력
+				System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+			}
+		}
+	}
+
 
 	private void showpoint() {
 		// TODO Auto-generated method stub
@@ -418,12 +553,12 @@ public class UlessonMainYB {
 		}
 	}	
 
-	
 
 
-//	public static void main(String[] args) {
-//		new UlessonMainYB();
-//	}
+
+	public static void main(String[] args) {
+		new UlessonMainYB();
+	}
 
 
 }
