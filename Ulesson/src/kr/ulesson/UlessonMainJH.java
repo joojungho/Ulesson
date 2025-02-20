@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 
 public class UlessonMainJH {
 	private BufferedReader br;
-	private String me_id; // 로그인한 아이디 저장
-	private boolean flag; // 로그인 여부
+	private String me_id = "jungho0609"; // 로그인한 아이디 저장
+	private boolean flag = true; // 로그인 여부
 	LessonDAO dao;
 	CategoryDAO ctdao;
 	public UlessonMainJH() {
@@ -16,14 +16,15 @@ public class UlessonMainJH {
 			//메뉴 호출
 			dao = new LessonDAO();
 			ctdao = new CategoryDAO();
-			callMenu();
+			//callMenu();
+			callAdminMenu();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if(br!=null) try {br.close();} catch (IOException e){}
 		}
 	}
-	
+
 	//메뉴 호출
 	private void callMenu() throws IOException{
 		//로그인 체크 영역
@@ -34,12 +35,13 @@ public class UlessonMainJH {
 				if (no == 1) {
 					//dao.updateLesson("수정 테스트", "주정호", 123456 , "강의 수정 테스트용 디테일내용", 120, "테스트",0);
 					//dao.selectLessonByCategory("테스트");
-//					dao.selectLessonSearch("수정");
-//					dao.selectLessonSearch("주정");
-//					dao.selectLessonSearch("정");
-					ctdao.insertCategory("웹 개발", null);
+					//					dao.selectLessonSearch("수정");
+					//					dao.selectLessonSearch("주정");
+					//					dao.selectLessonSearch("정");
+					//ctdao.insertCategory("테스트2", null);
+					ctdao.selectCategory("테스트");
 				} else if (no == 2){
-					
+
 				} else if (no == 3) {
 					break;
 				} else {
@@ -56,7 +58,7 @@ public class UlessonMainJH {
 				int no = Integer.parseInt(br.readLine());
 				if(no == 1) {
 				} else if (no == 2) {
-					
+
 				} else if (no == 3) {
 					break;
 				} else {
@@ -67,6 +69,29 @@ public class UlessonMainJH {
 			}
 		}
 	}
+
+	public void callAdminMenu() throws IOException {
+
+		while(flag) {
+			System.out.println("1.회원관리 2.강의관리 3.게시판관리");
+			try {
+				int no = Integer.parseInt(br.readLine());
+				if(no == 1) {
+
+				} else if (no == 2) {
+					LessonManager lm = new LessonManager(br);
+					lm.lessonManage();
+				} else if (no == 3) {
+					break;
+				} else {
+					System.out.println("잘못 입력했습니다.");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("[숫자만 입력 가능]");
+			}
+		}
+	}
+
 	public static void main(String[] args) {
 		new UlessonMainJH();
 	}
