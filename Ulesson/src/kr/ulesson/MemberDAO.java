@@ -13,7 +13,7 @@ public class MemberDAO {
 
 	// DB 연결 메서드
 	private Connection getConnection() throws SQLException {
-		String url = "jdbc:oracle:thin:@211.238.142.200:1521:xe"; // 오라클 DB 주소 (환경에 맞게 수정)
+		String url = "jdbc:oracle:thin:@211.238.142.200:1521:xe"; 
 		String user = "jteam03"; // 오라클 계정
 		String password = "1234"; // 비밀번호
 		return DriverManager.getConnection(url, user, password);
@@ -44,7 +44,7 @@ public class MemberDAO {
 		return exists;
 	}
 
-
+	//회원가입
 	public boolean insertMember(String mem_id, String mem_pw, int mem_auth, String mem_name, 
 			String mem_cell, String mem_email, int mem_point) {
 		Connection conn = null;
@@ -101,7 +101,8 @@ public class MemberDAO {
 		}
 		return flag;
 	}
-
+	
+	//사용자 정보 조회
 	public void getMemberInfo(String mem_id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -129,8 +130,9 @@ public class MemberDAO {
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
-	}
-
+	} //getMemberInfo
+	
+	//사용자 정보 수정
 	public boolean updateMember(String mem_id, String new_pw,String new_name,String new_cell,String new_email) {
 		boolean success = false;
 		Connection conn = null;
@@ -155,7 +157,7 @@ public class MemberDAO {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 		return success;
-	}
+	} //updateMember
 
 	//------------------------------------------------------------------------------
 	//관리자 메서드
@@ -211,7 +213,7 @@ public class MemberDAO {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
 		return members;
-	}
+	} //getAllMembers
 	
 	// 부적절한 회원 삭제
 	public boolean deleteMember(String mem_id) {
@@ -236,7 +238,7 @@ public class MemberDAO {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 		return success;
-	}
+	} //deleteMember
 	
 	// 회원 권한 변경 (일반 회원 <-> 관리자)
 	public boolean updateMemberAuth(String mem_id, int newAuth) {
@@ -261,10 +263,12 @@ public class MemberDAO {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 		return success;
-	}
+	} //updateMemberAuth
+	
 
 
-}
+
+} //class
 
 
 
