@@ -17,16 +17,18 @@ public class CategoryManager {
 		System.out.println("1.카테고리 추가 2.카테고리 삭제");
 		int num = Integer.parseInt(br.readLine());
 		switch (num) {
-		case 1: {
+		case 1: 
 			categoryService.addCategory();
-		}
-		break;
+			break;
+		case 2:
+			categoryService.deleteCategory();
+			break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + num);
 		}
 	}
 	
-	public void viewCategory(String name) {
-		categoryService.viewCategory(name);
+	public Item viewCategory(String name) throws NumberFormatException, IOException {
+		return categoryService.viewCategory(name);
 	}
 }

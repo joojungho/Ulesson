@@ -3,6 +3,7 @@ package kr.ulesson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import kr.util.DBUtil;
 
@@ -159,12 +160,12 @@ public class LessonDAO {
 	}
 
 	// 카테고리로 강의 조회
-	public void selectLessonByCategory(String ctname) {
+	public ArrayList<Item> selectLessonByCategory(String ctname) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-
+		ArrayList<Item> result = new ArrayList<Item>();
 		try {
 			//JDBC 수행 1,2 단계
 			conn = DBUtil.getConnection();
@@ -186,6 +187,7 @@ public class LessonDAO {
 					System.out.print("\t" + rs.getString("les_teacher"));
 					System.out.print("\t" + rs.getInt("les_score"));
 					System.out.println("\t" + rs.getInt("les_price") + "원");
+					result.add(new Item(rs.getInt("les_num"),rs.getString("les_name")));
 				} while (rs.next());
 			} else {
 				System.out.println("표시할 데이터가 없습니다.");
@@ -197,6 +199,7 @@ public class LessonDAO {
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
+		return result;
 	}
 
 	// 해당 단어를 가진 강의 조회
