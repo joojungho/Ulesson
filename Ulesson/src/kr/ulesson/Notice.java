@@ -3,7 +3,7 @@ package kr.ulesson;
 import java.util.Date;
 
 public class Notice {
-    private int ntNum;      // 공지/이벤트 번호
+    private int ntNum;         // 공지,이벤트 번호
     private String ntContent;  // 내용
     private int ntType;        // 타입 (0: 공지, 1: 이벤트)
     private Date ntDate;       // 날짜
@@ -12,11 +12,17 @@ public class Notice {
     public Notice(int ntNum, String ntContent, int ntType, Date ntDate) {
         this.ntNum = ntNum;
         this.ntContent = ntContent;
-        this.ntType = ntType;
+        this.ntType = ntType;     
         this.ntDate = ntDate;
+                
+        if (ntDate == null) {
+            this.ntDate = new Date();
+        } else {
+            this.ntDate = ntDate;
+        }
     }
 
-    // Getter와 Setter
+    // Getter, Setter
     public int getNtNum() {
         return ntNum;
     }

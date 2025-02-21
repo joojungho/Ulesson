@@ -3,6 +3,7 @@ package kr.ulesson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import kr.util.DBUtil;
 
@@ -19,7 +20,7 @@ public class sectionDAO {
 			//JDBC 수행 1,2 단계
 			conn = DBUtil.getConnection();
 			//SQL문 작성
-			sql = "INSERT INTO section (sec_num,les_num,sec_link,sec_time) VALUES (sec_seq.nextval,?,?,?)";
+			sql = "INSERT INTO section (sec_num,sec_name,les_num,sec_link,sec_time) VALUES (sc_seq.nextval,?,?,?,?)";
 			//JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
@@ -42,7 +43,7 @@ public class sectionDAO {
 	}
 	
 	// 섹션 수정
-	public boolean updateSection(String oldName, String newName, String link, int time) {
+	public boolean updateSection(int secNum, String newName, String link, int time) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -54,7 +55,7 @@ public class sectionDAO {
 			conn = DBUtil.getConnection();
 			//SQL문 작성
 			sql = "UPDATE section SET sec_name=?,sec_link=?,sec_time=?,sec_date=sysdate WHERE "
-					+ "sec_num=(SELECT sec_num FROM section WHERE sec_name=?)";
+					+ "sec_num=?";
 	
 			//JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
@@ -62,7 +63,7 @@ public class sectionDAO {
 			pstmt.setString(++cnt, newName);
 			pstmt.setString(++cnt, link);
 			pstmt.setInt(++cnt, time);
-			pstmt.setString(++cnt, oldName);
+			pstmt.setInt(++cnt, secNum );
 		
 			
 			//JDBC 수행 4단계
@@ -70,7 +71,7 @@ public class sectionDAO {
 			if(count > 0)
 			{
 				flag = true;
-				System.out.println(oldName + " 섹션을 수정했습니다.");
+				System.out.println("섹션을 수정했습니다.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +83,8 @@ public class sectionDAO {
 	}
 	
 	// 섹션 조회(해당 강의의)
-	public void selectSection(int lesNum) {
+	public ArrayList<Item> selectSection(int lesNum) {
+		ArrayList<Item> result = new ArrayList<Item>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -109,6 +111,7 @@ public class sectionDAO {
 					System.out.print(rs.getString("sec_name"));
 					System.out.print("\t" + rs.getString("sec_link"));
 					System.out.println("\t" + rs.getInt("sec_time") + "분");
+					result.add(new Item(rs.getInt("sec_num"),rs.getString("sec_name")));
 				} while (rs.next());
 			} else {
 				System.out.println("표시할 데이터가 없습니다.");
@@ -120,6 +123,7 @@ public class sectionDAO {
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
+		return result;
 	}
 	
 	public boolean deleteSection(int num) {

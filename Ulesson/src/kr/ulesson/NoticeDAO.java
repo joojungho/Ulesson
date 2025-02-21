@@ -23,14 +23,14 @@ public class NoticeDAO {
         String sql = "SELECT NT_NUM, NT_CONTENT, NT_TYPE, NT_DATE FROM NOTICE";
         
         try {
-            conn = DBUtil.getConnection();  // DB 연결
-            pstmt = conn.prepareStatement(sql);  // 쿼리 실행 준비
-            rs = pstmt.executeQuery();  // 실행
+            conn = DBUtil.getConnection(); 
+            pstmt = conn.prepareStatement(sql);  
+            rs = pstmt.executeQuery(); 
             
             // 결과 처리
             while (rs.next()) {
                 int ntNum = rs.getInt("NT_NUM");
-                String ntContent = rs.getString("NT_CONTENT");
+                String ntContent = rs.getString("NT_CONTENT");     
                 int ntType = rs.getInt("NT_TYPE");
                 Date ntDate = rs.getDate("NT_DATE");
                 
@@ -80,12 +80,12 @@ public class NoticeDAO {
         return notice;  // 결과 반환
     }
 
-    // 새로운 공지나 이벤트 추가
+ // 새로운 공지나 이벤트 추가
     public boolean addNotice(Notice notice) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
-        // NT_NUM은 시퀀스를 통해 자동으로 증가하므로, 이를 포함할 필요 없음
+        // NT_NUM은 시퀀스를 통해 자동으로 증가
         String sql = "INSERT INTO NOTICE (NT_NUM, NT_CONTENT, NT_TYPE) VALUES (NT_SEQ.NEXTVAL, ?, ?)";
 
         try {
@@ -93,6 +93,7 @@ public class NoticeDAO {
             pstmt = conn.prepareStatement(sql);  // 쿼리 실행 준비
             pstmt.setString(1, notice.getNtContent());  // 내용 바인딩
             pstmt.setInt(2, notice.getNtType());  // 타입 바인딩
+
             int rowsAffected = pstmt.executeUpdate();  // 실행
 
             return rowsAffected > 0;  // 삽입 성공 여부 반환
@@ -103,6 +104,44 @@ public class NoticeDAO {
         }
 
         return false;  // 삽입 실패
+    }
+    
+    // 공지글 수정
+    public boolean updateNotice(Notice notice) throws ClassNotFoundException {
+        String sql = "UPDATE NOTICE SET NT_TYPE = ?, NT_CONTENT = ?, NT_DATE = SYSDATE WHERE NT_NUM = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, notice.getNtType());
+            pstmt.setString(2, notice.getNtContent());
+            pstmt.setInt(3, notice.getNtNum());
+            
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // 공지글 삭제
+    public boolean deleteInquiry(int ntNum) throws ClassNotFoundException {
+        String sql = "DELETE FROM NOTICE WHERE NT_NUM = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ntNum);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
