@@ -23,14 +23,14 @@ public class NoticeDAO {
         String sql = "SELECT NT_NUM, NT_CONTENT, NT_TYPE, NT_DATE FROM NOTICE";
         
         try {
-            conn = DBUtil.getConnection();  // DB 연결
-            pstmt = conn.prepareStatement(sql);  // 쿼리 실행 준비
-            rs = pstmt.executeQuery();  // 실행
+            conn = DBUtil.getConnection(); 
+            pstmt = conn.prepareStatement(sql);  
+            rs = pstmt.executeQuery(); 
             
             // 결과 처리
             while (rs.next()) {
                 int ntNum = rs.getInt("NT_NUM");
-                String ntContent = rs.getString("NT_CONTENT");
+                String ntContent = rs.getString("NT_CONTENT");     
                 int ntType = rs.getInt("NT_TYPE");
                 Date ntDate = rs.getDate("NT_DATE");
                 

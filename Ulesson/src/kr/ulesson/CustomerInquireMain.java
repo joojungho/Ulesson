@@ -17,7 +17,7 @@ public class CustomerInquireMain {
 
     public static void main(String[] args) {
         
-    } // main
+    } // main   
     
   //고객문의사항(고객센터)
 

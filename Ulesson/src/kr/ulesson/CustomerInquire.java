@@ -15,7 +15,7 @@ public class CustomerInquire {
     // 생성자
     public CustomerInquire(int iqNum, String iqCate, String iqContent, String memId, Date iqDate, Date iqMdate, String rsContent, Date rsDate) {
         this.iqNum = iqNum;
-        this.iqCate = iqCate;
+        this.iqCate = iqCate;     
         this.iqContent = iqContent;
         this.memId = memId;
         this.iqDate = iqDate;

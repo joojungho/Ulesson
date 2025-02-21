@@ -40,7 +40,7 @@ public class UlessonMainYB {
 					// 로그인
 					login();
 					if (isLoggedIn) {
-						// 로그인 성공 시, 회원제 서비스 메뉴
+						// 로그인 성공 시, 회원제 서비스 메뉴     
 						while (isLoggedIn) {
 							showMemberMenu();
 							try {

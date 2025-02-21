@@ -15,7 +15,7 @@ public class NoticeMain {
 
     public static void main(String[] args) {
         
-    }
+    }   
 
 	// 공지 목록을 조회하고 새로운 공지를 작성하는 메소드
 	public void showNotice() throws ClassNotFoundException {

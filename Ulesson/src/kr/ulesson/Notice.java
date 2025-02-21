@@ -12,7 +12,7 @@ public class Notice {
     public Notice(int ntNum, String ntContent, int ntType, Date ntDate) {
         this.ntNum = ntNum;
         this.ntContent = ntContent;
-        this.ntType = ntType;
+        this.ntType = ntType;     
         this.ntDate = ntDate;
                 
         if (ntDate == null) {

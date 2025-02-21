@@ -164,7 +164,7 @@ public class CustomerInquireDAO {
             pstmt.setObject(1, rsContent, Types.VARCHAR);  // 답변 내용 (null 허용)
             pstmt.setInt(2, iqNum);  // 문의글 번호
 
-            int rowsAffected = pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();     
             return rowsAffected > 0;  // 업데이트가 성공했으면 true 반환
 
         } catch (SQLException e) {
