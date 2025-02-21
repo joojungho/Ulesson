@@ -24,7 +24,7 @@ public class BoardCategoryMain {
 					br.close();
 				} catch (Exception e) {
 
-				}
+				} 
 			}
 		}
 	}

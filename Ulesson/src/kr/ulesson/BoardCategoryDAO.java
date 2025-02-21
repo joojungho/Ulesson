@@ -36,7 +36,7 @@ public class BoardCategoryDAO {
 
 	    return false; 
 	}
-	
+	 
 	
 	//카테고리 추가
 	public void insertBoardCategory(int bdct_num, String bdct_name) {

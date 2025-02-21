@@ -153,7 +153,7 @@ public class BoardMain {
 						} else {
 							break; 
 						}
-					}
+					} 
 
 					boardDAO.selectAllBoards();
 

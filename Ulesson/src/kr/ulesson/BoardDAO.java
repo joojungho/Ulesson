@@ -204,7 +204,7 @@ public class BoardDAO {
         String sql = null;
 
         try {
-            // 데이터베이스 연결
+           
             conn = DBUtil.getConnection();
             // 게시글 내용 수정
             sql = "UPDATE board SET bd_content = ? WHERE bd_num = ?";
