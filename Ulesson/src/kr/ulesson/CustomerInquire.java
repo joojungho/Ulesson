@@ -24,7 +24,7 @@ public class CustomerInquire {
         this.rsDate = rsDate;
     }
 
-    // Getter와 Setter들
+    // Getter, Setter
     public int getIqNum() {
         return iqNum;
     }
