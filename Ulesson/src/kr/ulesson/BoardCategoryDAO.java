@@ -77,8 +77,7 @@ public class BoardCategoryDAO {
     	  
     	  System.out.println("--------------- 카테고리 목록 ---------------");
           while(rs.next())
-          	System.out.println("게시판 카테고리 : " + rs.getInt("bdct_num") +"."+ rs.getString("bdct_name"));
-		
+          	System.out.println(rs.getInt("bdct_num") +"."+ rs.getString("bdct_name"));
 	} catch (Exception e) {
 		e.printStackTrace();
 	}finally {
