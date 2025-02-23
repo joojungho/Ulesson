@@ -9,10 +9,12 @@ public class LessonService {
 	private LessonDAO dao = new LessonDAO();
 	private BufferedReader br;
 	private CategoryService categoryService;
+	private ReviewService reviewService;
 	
 	public LessonService(BufferedReader br) {
 		this.br = br;
 		this.categoryService = new CategoryService(br);
+		this.reviewService = new ReviewService(br);
 	}
 	
 	public void addLesson() throws IOException {
@@ -63,7 +65,18 @@ public class LessonService {
 		return dao.selectLessonByCategory(ctName);	
 	}
 	
-	public void viewLessonDetail(int lesNum) {
+	public void viewLessonDetail(int lesNum) throws NumberFormatException, IOException {
 		dao.selectLessonDetail(lesNum);
+		System.out.print("1.리뷰 열람 2.강의 구매");
+		int num = Integer.parseInt(br.readLine());
+		switch (num) {
+			case 1:
+				reviewService.viewReviewLec(lesNum);
+				break;
+			case 2:
+				break;
+			default:
+				break;
+		}
 	}
 }

@@ -20,4 +20,6 @@ public class ReviewManager {
 		int num = Integer.parseInt(br.readLine());
 		reviewService.deleteReview(list.get(num - 1).getNumber());
 	}
+	
+	
 }
