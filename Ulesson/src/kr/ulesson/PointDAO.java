@@ -10,13 +10,6 @@ import kr.util.DBUtil;
 
 public class PointDAO {
 
-	private Connection getConnection() throws SQLException {
-		String url = "jdbc:oracle:thin:@211.238.142.200:1521:xe"; 
-		String user = "jteam03"; // 오라클 계정
-		String password = "1234"; // 비밀번호
-		return DriverManager.getConnection(url, user, password);
-	} //getConnection
-
 	//포인트 충전
 	public boolean addPoint(String mem_id, int mem_point) {
 		boolean add = false;
@@ -69,10 +62,14 @@ public class PointDAO {
 			pstmt.setString(1, mem_id);
 			rs = pstmt.executeQuery();
 			boolean data = true;
+			
 			while (rs.next()) {
+				System.out.println(); //개행
+				
 				System.out.println("아이디" + rs.getString("mem_id"));
 				System.out.println("충전일자" + rs.getDate("pt_chng_date"));
 				System.out.println("충전금액" + rs.getInt("pt_value"));
+				
 				System.out.println(); //개행
 			} if(!data) {
 				System.out.println("충전 정보를 더 이상 찾을 수 없습니다.");

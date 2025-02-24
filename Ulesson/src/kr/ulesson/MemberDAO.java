@@ -202,7 +202,7 @@ public class MemberDAO {
 			pstmt.setString(1, memId);
 			rs = pstmt.executeQuery();
 			
-			System.out.println(memId + "님의 학습 진행도");
+			System.out.println("==== " + memId + "님의 학습진행도 ====");
 			while (rs.next()) {
 				
 				int lesNum = rs.getInt("les_num");

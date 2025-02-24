@@ -75,7 +75,7 @@ public class CustomerInquireMain {
 					System.out.print("옵션을 선택하세요: ");
 					int subOption = scanner.nextInt();
 					scanner.nextLine();
-
+              
 					if(subOption == 1) {
 						List<CustomerInquire> inquiries = dao.getMyInquires(mem_id);
 						if (inquiries.isEmpty()) {
@@ -113,7 +113,7 @@ public class CustomerInquireMain {
 
 						System.out.print("작성자 ID를 입력하세요: ");
 						String memId = scanner.nextLine();
-
+                              
 						CustomerInquire newInquiry = new CustomerInquire(0, iqCate, iqContent, memId, null, null, null, null);
 						boolean isAdded = dao.addInquiry(newInquiry);
 						if (isAdded) {
@@ -266,7 +266,7 @@ public class CustomerInquireMain {
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
 			} else {  // 잘못 입력
-				System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+				System.out.println("잘못된 입력입니다. 다시 입력하세요.");
 			}
 		}
 	}

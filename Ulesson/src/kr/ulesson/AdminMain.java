@@ -180,7 +180,7 @@ public class AdminMain {
 		System.out.println("관리자 로그아웃되었습니다.");
 	}
 
-	public static void main(String[] args) {
-		new AdminMain();
-	}
+//	public static void main(String[] args) {
+//		new AdminMain();
+//	}
 }
