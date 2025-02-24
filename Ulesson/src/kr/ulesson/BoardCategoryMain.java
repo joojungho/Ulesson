@@ -32,7 +32,7 @@ public class BoardCategoryMain {
    //메뉴
    private void callMenu() throws IOException {
       while (true) {
-
+    	 System.out.println("------------------------------------------");
          System.out.print("1.게시판 카테고리 추가, 2. 게시판 카테고리 삭제 3. 게시판 카테고리 목록 4.종료>");
          try {
             int num = Integer.parseInt(br.readLine());

@@ -71,6 +71,7 @@ public class LessonDAO {
 					System.out.println("개요: " + rs.getString("les_detail"));
 					System.out.println("완강시간: " + rs.getInt("les_time"));
 					System.out.println("카테고리: " + rs.getString("ct_name"));
+					System.out.println("별점: " + rs.getInt("les_score"));
 				} while (rs.next());
 			} else {
 				System.out.println("표시할 데이터가 없습니다.");

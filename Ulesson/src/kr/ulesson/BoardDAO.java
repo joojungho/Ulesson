@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import kr.util.DBUtil;
 
 public class BoardDAO {
+	
+	private MemberDAO MemberDAO;
 
    // 내 게시물 목록
    public void MyBoard(String memId) {
