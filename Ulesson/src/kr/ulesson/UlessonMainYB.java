@@ -56,7 +56,8 @@ public class UlessonMainYB {
 									showmylesson();
 								} else if (no2 == 4) {
 									// 구매내역으로 이동
-									showPurchasedLessons();
+									PurchasedLessonMain purchasedLesson = new PurchasedLessonMain(this, isLoggedIn);
+									purchasedLesson.showPurchasedLessons();
 								} else if (no2 == 5) {
 									// 위시리스트로 이동
 									showwishlist();
@@ -74,6 +75,9 @@ public class UlessonMainYB {
 									// 공지게시판으로 이동
 									NoticeMain noticeMain = new NoticeMain(this, isLoggedIn);
 									noticeMain.showNotice();
+								} else if (no2 == 0) {
+									// 종료
+									System.exit(0);
 								} else {
 									System.out.println("잘못 입력했습니다.");
 								}
@@ -113,24 +117,7 @@ public class UlessonMainYB {
 
 	}
 
-	// 권용범 작성 구매내역조회
-	private void showPurchasedLessons() {
-		// PurchasedLessonDAO 인스턴스 생성
-		PurchasedLessonDAO dao = new PurchasedLessonDAO();
-
-		// 모든 purchased_lesson 데이터 가져오기
-		List<PurchasedLesson> purchasedLessons = dao.getAllPurchasedLessons();
-
-		// 조회된 purchasedLessons 목록 출력
-		if (purchasedLessons.isEmpty()) {
-			System.out.println("구매된 강의가 없습니다.");
-		} else {
-			System.out.println("구매된 강의 목록:");
-			for (PurchasedLesson lesson : purchasedLessons) {
-				System.out.println(lesson);  // toString 메서드가 자동 호출되어 강의 정보를 출력
-			}
-		}
-	}
+	
 
 
 
@@ -160,6 +147,7 @@ public class UlessonMainYB {
 		System.out.println("7. 포인트");
 		System.out.println("8. 고객센터");
 		System.out.println("9. 공지게시판");
+		System.out.println("0. 종료");
 		System.out.print("메뉴를 선택하세요: ");
 	}
 
@@ -203,7 +191,7 @@ public class UlessonMainYB {
 			System.out.println("로그인 성공!");
 			mem_id = id;  // 로그인한 사용자 아이디 저장
 			flag = true;   // 로그인 성공 후 flag 설정
-			isLoggedIn = true;
+			isLoggedIn = true; // 로그인 상태 저장
 		} else {
 			System.out.println("아이디 또는 비밀번호가 잘못되었습니다.");
 		}
@@ -215,8 +203,4 @@ public class UlessonMainYB {
 	public static void main(String[] args) {
 		new UlessonMainYB();
 	}
-
-
-
-
 }

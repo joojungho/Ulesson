@@ -266,7 +266,7 @@ public class CustomerInquireMain {
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
 			} else {  // 잘못 입력
-				System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+				System.out.println("잘못된 입력입니다. 다시 입력하세요.");
 			}
 		}
 	}

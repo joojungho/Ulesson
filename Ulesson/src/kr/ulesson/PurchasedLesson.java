@@ -69,6 +69,6 @@ public class PurchasedLesson {
 
     @Override
     public String toString() {
-        return "[구매번호=" + pchNum + ", 강의번호=" + lesNum + ", 강의명=" + lesName + ", 사용자ID=" + memId + ", 구매날짜=" + pchDate + ", 구매상태=" + pchStatus + "]";
+        return "[구매번호 : " + pchNum + ", 강의번호 : " + lesNum + ", 강의명 : " + lesName + ", 사용자ID : " + memId + ", 구매날짜 : " + pchDate + ", 구매상태 : " + pchStatus + "]";
     }
 }
