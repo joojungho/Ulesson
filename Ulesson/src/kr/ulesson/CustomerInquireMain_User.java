@@ -4,25 +4,23 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-public class CustomerInquireMain {
+public class CustomerInquireMain_User {
 	private UlessonMainYB mainMenu;
-    private boolean isLoggedIn;
-    private String mem_id;
-    
-    public CustomerInquireMain(UlessonMainYB mainMenu, boolean isLoggedIn) {
-        this.mainMenu = mainMenu;
-        this.isLoggedIn = isLoggedIn;
-        this.mem_id = mainMenu.getMemId();
-    }
+	private boolean isLoggedIn;
+	private String mem_id;
 
-    public static void main(String[] args) {
-        
-    } // main   
-    
-  //고객문의사항(고객센터)
+	public CustomerInquireMain_User(UlessonMainYB mainMenu, boolean isLoggedIn) {
+		this.mainMenu = mainMenu;
+		this.isLoggedIn = isLoggedIn;
+		this.mem_id = mainMenu.getMemId();
+	}
 
+	public static void main(String[] args) {
 
-	public void showCustomerInquire() throws ClassNotFoundException, SQLException {
+	} // main  
+
+	// 고객센터(사용자)
+	public void showCustomerInquire_User() throws ClassNotFoundException, SQLException {
 		CustomerInquireDAO dao = new CustomerInquireDAO();
 		Scanner scanner = new Scanner(System.in);
 
@@ -32,9 +30,8 @@ public class CustomerInquireMain {
 			System.out.println("3. 문의글 작성");
 			System.out.println("4. 문의글 수정");
 			System.out.println("5. 답변 조회");
-			System.out.println("6. 답변 작성");
-			System.out.println("7. 뒤로가기");
-			System.out.println("8. 종료");
+			System.out.println("6. 뒤로가기");
+			System.out.println("7. 종료");
 			System.out.print("옵션을 선택하세요: ");
 
 			int option = scanner.nextInt();
@@ -75,7 +72,7 @@ public class CustomerInquireMain {
 					System.out.print("옵션을 선택하세요: ");
 					int subOption = scanner.nextInt();
 					scanner.nextLine();
-              
+
 					if(subOption == 1) {
 						List<CustomerInquire> inquiries = dao.getMyInquires(mem_id);
 						if (inquiries.isEmpty()) {
@@ -113,7 +110,7 @@ public class CustomerInquireMain {
 
 						System.out.print("작성자 ID를 입력하세요: ");
 						String memId = scanner.nextLine();
-                              
+
 						CustomerInquire newInquiry = new CustomerInquire(0, iqCate, iqContent, memId, null, null, null, null);
 						boolean isAdded = dao.addInquiry(newInquiry);
 						if (isAdded) {
@@ -179,7 +176,7 @@ public class CustomerInquireMain {
 					}
 				}
 			} // else if 4
-			else if (option == 5) {  // 답변 조회
+			else if(option == 5) {
 				while(true) {
 					// 옵션 선택
 					System.out.println("1. 답변 조회");					
@@ -215,54 +212,11 @@ public class CustomerInquireMain {
 						System.out.println("잘못된 입력입니다. 다시 입력하세요");
 					}
 				}
-
-			} else if (option == 6) {  // 답변 작성, 관리자만 가능하도록 조건 설정(mem_id = admin)
-				while(true) {
-					// 옵션 선택
-					System.out.println("1. 답변작성");					
-					System.out.println("2. 뒤로가기");
-					System.out.println("3. 종료");
-					System.out.print("옵션을 선택하세요: ");
-					int subOption = scanner.nextInt();
-					scanner.nextLine();
-
-					if (subOption == 1) {
-						System.out.print("답변을 작성할 문의글 번호를 입력하세요: ");
-						int iqNumToAnswer = scanner.nextInt();
-						scanner.nextLine();
-
-						// 답변 작성
-						System.out.print("답변 내용을 입력하세요: ");
-						String rsContent = scanner.nextLine();
-
-						// 관리자 ID입력
-						System.out.print("관리자 ID를 입력하세요: ");
-						String adminId = scanner.nextLine();
-
-						// 관리자 ID 일치하는지 확인
-						if ("admin".equals(adminId)) {
-							boolean isAnswered = dao.addAnswer(iqNumToAnswer, rsContent);
-							if (isAnswered) {
-								System.out.println("답변이 작성되었습니다.");
-							} else {
-								System.out.println("답변 작성에 실패했습니다."); // 문의글 번호나 내용이 유효하지 않을때
-							}
-						} else {
-							System.out.println("권한이 없습니다."); // 관리자 ID 불일치
-						}
-						break;
-					} else if (subOption == 2){
-						break;
-					} else if (subOption == 3){
-						return;
-					} else {
-						System.out.println("잘못된 입력입니다. 다시 입력하세요");
-					}
-				}
-			} else if (option == 7) {  // 뒤로가기				
+			}
+			else if (option == 6) {  // 뒤로가기				
 				mainMenu.showMemberMenu();
-                break;
-			} else if(option == 8) { // 종료
+				break;
+			} else if(option == 7) { // 종료
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
 			} else {  // 잘못 입력

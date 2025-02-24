@@ -69,8 +69,13 @@ public class UlessonMainYB {
 									showpoint();
 								} else if (no2 == 8) {
 									// 고객센터로 이동
-									CustomerInquireMain customerInquire = new CustomerInquireMain(this, isLoggedIn);
-									customerInquire.showCustomerInquire();
+									if(mem_id.equals("admin")) {
+										CustomerInquireMain_Admin customerInquire = new CustomerInquireMain_Admin(this, isLoggedIn);
+										customerInquire.showCustomerInquire_Admin();
+									} else {
+										CustomerInquireMain_User customerInquire = new CustomerInquireMain_User(this, isLoggedIn);
+										customerInquire.showCustomerInquire_User();
+									}
 								} else if (no2 == 9) {
 									// 공지게시판으로 이동
 									NoticeMain noticeMain = new NoticeMain(this, isLoggedIn);
