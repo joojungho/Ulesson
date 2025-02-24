@@ -14,6 +14,7 @@ public class UlessonMain {
 			br = new BufferedReader(new InputStreamReader(System.in));
 			//메뉴 호출
 			callMenu();
+			MemberMain memMain = new MemberMain();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

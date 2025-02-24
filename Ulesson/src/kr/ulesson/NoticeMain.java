@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class NoticeMain {
     private UlessonMainYB mainMenu;
     private boolean isLoggedIn;
+    private boolean isAdmin = false;
 
     public NoticeMain(UlessonMainYB mainMenu, boolean isLoggedIn) {
         this.mainMenu = mainMenu;
