@@ -3,7 +3,7 @@ package kr.ulesson;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-
+                                  
 public class NoticeMain {
     private UlessonMainYB mainMenu;
     private boolean isLoggedIn;
@@ -50,7 +50,7 @@ public class NoticeMain {
 					System.out.println("1. 특정 번호 공지글 보기");
 					System.out.println("2. 뒤로가기");
 					System.out.println("3. 종료");
-					System.out.print("옵션을 선택하세요");
+					System.out.print("옵션을 선택하세요: ");
 					int subOption = scanner.nextInt();
 					scanner.nextLine();
 
