@@ -67,7 +67,7 @@ public class UlessonMainYB {
 								} else if (no2 == 7) {
 									// 포인트로 이동
 									showpoint();
-								} else if (no2 == 8) {
+								} else if (no2 == 8) {                        
 									// 고객센터로 이동
 									if(mem_id.equals("admin")) {
 										CustomerInquireMain_Admin customerInquire = new CustomerInquireMain_Admin(this, isLoggedIn);

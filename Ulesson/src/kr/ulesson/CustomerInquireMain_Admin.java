@@ -19,7 +19,7 @@ public class CustomerInquireMain_Admin {
         
     } // main   
     
-    // 고객센터(관리자)
+    // 고객센터(관리자)        
 	public void showCustomerInquire_Admin() throws ClassNotFoundException, SQLException {
 		CustomerInquireDAO dao = new CustomerInquireDAO();
 		Scanner scanner = new Scanner(System.in);
