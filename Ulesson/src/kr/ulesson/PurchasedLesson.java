@@ -7,7 +7,7 @@ public class PurchasedLesson {
     private String memId;    // 멤버 ID
     private String pchDate;  // 구매 날짜
     private String pchStatus;   // 구매 상태 (구매 상태 또는 환불 상태로 처리)
-
+         
     // 생성자
     public PurchasedLesson(int pchNum, int lesNum, String lesName, String memId, String pchDate, String pchStatus) {
         this.pchNum = pchNum;
@@ -69,6 +69,6 @@ public class PurchasedLesson {
 
     @Override
     public String toString() {
-        return "[구매번호=" + pchNum + ", 강의번호=" + lesNum + ", 강의명=" + lesName + ", 사용자ID=" + memId + ", 구매날짜=" + pchDate + ", 구매상태=" + pchStatus + "]";
+        return "[구매번호 : " + pchNum + ", 강의번호 : " + lesNum + ", 강의명 : " + lesName + ", 사용자ID : " + memId + ", 구매날짜 : " + pchDate + ", 구매상태 : " + pchStatus + "]";
     }
 }

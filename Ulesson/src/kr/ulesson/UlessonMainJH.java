@@ -101,8 +101,8 @@ public class UlessonMainJH {
 		}
 	}
 
-	public static void main(String[] args) {
-		new UlessonMainJH();
-	}
+//	public static void main(String[] args) {
+//		new UlessonMainJH();
+//	}
 
 }

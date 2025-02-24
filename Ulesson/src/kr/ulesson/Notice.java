@@ -1,6 +1,6 @@
 package kr.ulesson;
 
-import java.util.Date;
+import java.util.Date;         
 
 public class Notice {
     private int ntNum;         // 공지,이벤트 번호

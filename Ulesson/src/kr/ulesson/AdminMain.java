@@ -14,11 +14,14 @@ public class AdminMain {
 	private BufferedReader br;
 	private MemberDAO dao;
 	private boolean isAdminLoggedIn;
+	private LessonManager lessonManager;
+	private NoticeMain noticeMain;
 
 	public AdminMain() {
 		try {
 			br = new BufferedReader(new InputStreamReader(System.in));
 			dao = new MemberDAO();
+			lessonManager = new LessonManager(br);
 			adminMenu();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,7 +54,9 @@ public class AdminMain {
 			System.out.println("1. 회원 목록 조회");
 			System.out.println("2. 회원 삭제");
 			System.out.println("3. 회원 권한 변경");
-			System.out.println("4. 로그아웃");
+			System.out.println("4. 강의 관리");
+			System.out.println("5. 공지사항 관리");
+			System.out.println("6. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -69,6 +74,12 @@ public class AdminMain {
 					changeMemberAuth();
 					break;
 				case 4:
+					lessonManager.lessonManage();
+					break;
+				case 5:
+					noticeMain = new NoticeMain(null, isAdminLoggedIn);
+					break;
+				case 6:
 					logout();
 					break;
 				default:
@@ -169,7 +180,7 @@ public class AdminMain {
 		System.out.println("관리자 로그아웃되었습니다.");
 	}
 
-	public static void main(String[] args) {
-		new AdminMain();
-	}
+//	public static void main(String[] args) {
+//		new AdminMain();
+//	}
 }
