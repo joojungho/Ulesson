@@ -89,13 +89,14 @@ public class MemberMain {
 					if (buyChoice.equals("Y")) {
 						
 						PointDAO pointDAO = new PointDAO();
-						pointDAO.minusPointsForLesson(mem_id, lesNum);
+						if(pointDAO.minusPointsForLesson(mem_id, lesNum)) {
 
 						
 						MyLessonDAO myLessonDAO = new MyLessonDAO();
 						myLessonDAO.addLesson(mem_id, lesNum);
-
 						System.out.println("구매가 완료되었습니다! 내 학습에서 확인하세요.");
+						} 
+
 					} else {
 						System.out.println("구매를 취소하셨습니다.");
 					}
@@ -184,10 +185,6 @@ public class MemberMain {
 
 
 
-
-
-
-
 	// 로그인 메서드
 	private void login() throws IOException {
 		System.out.print("아이디(취소: 0) >> ");
@@ -267,6 +264,7 @@ public class MemberMain {
 		} //if-else
 
 	} //updateMemberInfo
+	
 
 	private void addPoint() throws IOException {
 		System.out.println(); //개행
@@ -275,30 +273,23 @@ public class MemberMain {
 
 	    while (true) {
 	        try {
-	            System.out.print("포인트 숫자 입력: ");
+	            System.out.print("포인트 숫자 입력: (충전 취소는 0 입력) >> ");
 	            pt_value = Integer.parseInt(br.readLine());
 
-	            if (pt_value < 0) {
-	                System.out.println("[오류] 0 이하의 금액은 충전할 수 없습니다. 다시 입력하세요.");
-	            } else {
-	                break; // 정상적인 입력이면 반복문 종료
-	            }
+	            if (pt_value == 0) {
+	            	break;
+	            } else if (pt_value < 0){
+	            	System.out.println("[오류] 0 미만의 금액은 충전할 수 없습니다.");
+	            } else if (pt_value > 0){
+					System.out.println(pt_value +"점" + "충전 완료 되었습니다.");
+					break;
+				} 
 	        } catch (NumberFormatException e) {
 	            System.out.println("[숫자만 입력 가능] 올바른 금액을 입력하세요.");
 	        }
 	    }
 
-	    boolean add = pot.addPoint(mem_id, pt_value);
-
-	    if (add) {
-	        System.out.println("★포인트 충전 완료★");
-	    } else {
-	        System.out.println("포인트 충전에 실패했습니다. 다시 시도하세요.");
-	    }
-	}
-
-
-
+	} //addPoint
 
 
 	public static void main(String[] args) {
