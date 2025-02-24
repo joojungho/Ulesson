@@ -12,12 +12,19 @@ public class CustomerInquireMain_Admin {
     public CustomerInquireMain_Admin(UlessonMainYB mainMenu, boolean isLoggedIn) {
         this.mainMenu = mainMenu;
         this.isLoggedIn = isLoggedIn;
-        this.mem_id = mainMenu.getMemId();
+        this.mem_id = "admin";
+        
+        try {
+			showCustomerInquire_Admin();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
-    public static void main(String[] args) {
-        
-    } // main   
     
     // 고객센터(관리자)        
 	public void showCustomerInquire_Admin() throws ClassNotFoundException, SQLException {
@@ -115,7 +122,9 @@ public class CustomerInquireMain_Admin {
 
 						// 답변 작성
 						System.out.print("답변 내용을 입력하세요: ");
-						String rsContent = scanner.nextLine();						
+						String rsContent = scanner.nextLine();		
+						
+						dao.addAnswer(iqNumToAnswer, rsContent);
 					} else if (subOption == 2){
 						break;
 					} else if (subOption == 3){

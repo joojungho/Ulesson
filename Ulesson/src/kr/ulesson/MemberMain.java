@@ -88,7 +88,7 @@ public class MemberMain {
 
 			//마이페이지
 			while (isMyPage) {
-				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5.뒤로가기 >> ");
+				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 뒤로가기 >> ");
 				System.out.println(); //개행
 
 				try {
@@ -120,6 +120,9 @@ public class MemberMain {
 						break;
 
 					case 5:
+						new CustomerInquireMain_User(null, true, mem_id);
+						break;
+					case 6:
 						System.out.println("이전 메뉴로 돌아갑니다.");
 						isMyPage = false;
 						break;
@@ -262,9 +265,9 @@ public class MemberMain {
 
 
 
-	public static void main(String[] args) {
-		new MemberMain();
-	} //main
+//	public static void main(String[] args) {
+//		new MemberMain();
+//	} //main
 
 
 } //class

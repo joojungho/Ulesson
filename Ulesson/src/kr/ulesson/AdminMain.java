@@ -56,7 +56,8 @@ public class AdminMain {
 			System.out.println("3. 회원 권한 변경");
 			System.out.println("4. 강의 관리");
 			System.out.println("5. 공지사항 관리");
-			System.out.println("6. 로그아웃");
+			System.out.println("6. 문의사항 관리");			
+			System.out.println("7. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -80,6 +81,9 @@ public class AdminMain {
 					noticeMain = new NoticeMain(null, isAdminLoggedIn);
 					break;
 				case 6:
+					new CustomerInquireMain_Admin(null, true);
+					break;
+				case 7:
 					logout();
 					break;
 				default:
@@ -180,7 +184,7 @@ public class AdminMain {
 		System.out.println("관리자 로그아웃되었습니다.");
 	}
 
-//	public static void main(String[] args) {
-//		new AdminMain();
-//	}
+	public static void main(String[] args) {
+		new AdminMain();
+	}
 }

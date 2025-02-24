@@ -9,7 +9,7 @@ public class BoardMain {
 	private BufferedReader br;
 	private BoardDAO boardDAO;
 
-	public BoardMain() {
+	public BoardMain(boolean isAdmin) {
 		try {
 			br = new BufferedReader(new InputStreamReader(System.in));
 			boardDAO = new BoardDAO();
@@ -230,6 +230,6 @@ public class BoardMain {
 	}
 
 	public static void main(String[] args) {
-		new BoardMain();
+		//new BoardMain();
 	}
 }
