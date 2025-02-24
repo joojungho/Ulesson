@@ -3,6 +3,7 @@ package kr.ulesson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MemberMain {
 	private BufferedReader br;
@@ -10,15 +11,19 @@ public class MemberMain {
 	private PointDAO pot;
 	private String mem_id; // 로그인한 아이디 저장
 	private boolean isLoggedIn; // 로그인 여부
+	private boolean isAdmin = false;
 	private boolean isPointInfo = false;
 	private boolean isMyPage;
+	private CategoryService categoryService;
+	private LessonService lessonService;
 
 	public MemberMain() {
 		try {
 			br = new BufferedReader(new InputStreamReader(System.in));
 			dao = new MemberDAO();
 			pot = new PointDAO();
-
+			categoryService = new CategoryService(br);
+			lessonService = new LessonService(br);
 			callMenu();
 
 		} catch (Exception e) {
@@ -57,7 +62,7 @@ public class MemberMain {
 
 		// 로그인 후 추가 기능 메뉴
 		while (isLoggedIn) {
-			System.out.print("\n 1. 마이페이지 | 2. 마이포인트 | 3.장바구니 | 4.내학습 | 5. 종료 >> ");
+			System.out.print("\n 1. 마이페이지 | 2. 마이포인트 | 3.장바구니 | 4.내학습 | 5. 강의 둘러보기 | 6. 종료 >> ");
 			try {
 				int choice = Integer.parseInt(br.readLine());
 				if (choice == 1) {
@@ -69,6 +74,12 @@ public class MemberMain {
 				} else if (choice == 4) {
 					dao.myLesson(mem_id);
 				} else if (choice == 5) {
+					Item result = categoryService.viewCategory(null);
+					ArrayList<Item> list = lessonService.viewLesson(result.getName());
+					System.out.print("강의를 선택하세요: ");
+					int num = Integer.parseInt(br.readLine());
+					lessonService.viewLessonDetail(list.get(num - 1).getNumber());
+				} else if (choice == 6) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
 				} else {
@@ -135,6 +146,7 @@ public class MemberMain {
 
 		if (dao.loginCheck(mem_id, mem_pw)) {
 			System.out.println(mem_id + "님, 로그인 되었습니다.");
+			if (mem_id.equals("admin")) isAdmin = true;
 			isLoggedIn = true;
 		} else {
 			System.out.println("아이디 또는 비밀번호가 불일치합니다.");
