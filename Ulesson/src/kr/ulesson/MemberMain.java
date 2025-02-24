@@ -37,7 +37,7 @@ public class MemberMain {
 		} //finally
 
 	} // MemberMain
-
+ 
 	private void callMenu() throws IOException {
 		while (true) {
 			System.out.print("\n 1. 로그인 | 2. 회원가입 | 3. 종료 >> ");
