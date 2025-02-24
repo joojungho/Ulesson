@@ -11,7 +11,7 @@ public class MemberMain {
 	private PointDAO pot;
 	private String mem_id; // 로그인한 아이디 저장
 	private boolean isLoggedIn; // 로그인 여부
-	private boolean isAdmin = false;
+	
 	private boolean isPointInfo = false;
 	private boolean isMyPage;
 	private CategoryService categoryService;
@@ -62,24 +62,18 @@ public class MemberMain {
 
 		// 로그인 후 추가 기능 메뉴
 		while (isLoggedIn) {
-			System.out.print("\n 1. 마이페이지 | 2. 마이포인트 | 3.장바구니 | 4.내학습 | 5. 강의 둘러보기 | 6. 종료 >> ");
+			System.out.print("\n 1. 마이페이지 | 2. 강의 둘러보기 | 3. 종료 >> ");
 			try {
 				int choice = Integer.parseInt(br.readLine());
 				if (choice == 1) {
 					isMyPage = true;
 				} else if (choice == 2) {
-					isPointInfo = true;
-				} else if (choice == 3) {
-					dao.wishlist(mem_id);
-				} else if (choice == 4) {
-					dao.myLesson(mem_id);
-				} else if (choice == 5) {
 					Item result = categoryService.viewCategory(null);
 					ArrayList<Item> list = lessonService.viewLesson(result.getName());
 					System.out.print("강의를 선택하세요: ");
 					int num = Integer.parseInt(br.readLine());
 					lessonService.viewLessonDetail(list.get(num - 1).getNumber());
-				} else if (choice == 6) {
+				} else if (choice == 3) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
 				} else {
@@ -88,47 +82,76 @@ public class MemberMain {
 			} catch (NumberFormatException e) {
 				System.out.println("[숫자만 입력 가능]");
 			}
-			
+
 			//마이페이지
 			while (isMyPage) {
-				System.out.print("\n 1.회원 정보 조회 | 2.회원 정보 수정 | 3.뒤로가기 >> ");
+				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5.뒤로가기 >> ");
+				System.out.println(); //개행
+
 				try {
 					int choice = Integer.parseInt(br.readLine());
-					if (choice == 1) {
+
+					switch(choice) {
+					case 1:
 						dao.getMemberInfo(mem_id);
-					} else if (choice == 2) {
-						updateMemberInfo();
-					} else if (choice == 3){
+						System.out.println(); // 개행
+						System.out.print("1. 회원 정보 수정 | 2. 뒤로가기 >> ");
+						int subChoice = Integer.parseInt(br.readLine()); // 하위 메뉴 입력 받기
+						if (subChoice == 1) {
+							updateMemberInfo(); 
+						} else if (subChoice == 2) {
+							System.out.println("이전 메뉴로 돌아갑니다.");
+						}
+						break;
+
+					case 2:
+						isPointInfo = true;  // 포인트 관련
+						break;
+
+					case 3:
+						dao.wishlist(mem_id); // 장바구니
+						break;
+
+					case 4:
+						dao.myLesson(mem_id); // 내 학습
+						break;
+
+					case 5:
 						System.out.println("이전 메뉴로 돌아갑니다.");
 						isMyPage = false;
 						break;
-					}
-				} catch (NumberFormatException e) {
-					System.out.println("[숫자만 입력 가능]");
-				}
-			}
-			
-			//마이포인트
-			while (isPointInfo) {
-				System.out.print("\n 1.포인트 조회 | 2.포인트 충전 | 3.뒤로가기 >>");
-				try {
-					int choice = Integer.parseInt(br.readLine());
-					if (choice == 1) {
-						pot.pointInfo(mem_id);
-					} else if (choice == 2) {
-						addPoint();
-					} else if (choice == 3){
-						System.out.println("이전 메뉴로 돌아갑니다.");
-						isPointInfo = false;  // 이전 메뉴
+
+					default:
+						System.out.println("올바른 번호를 입력하세요.");
 						break;
-					} else {
-						System.out.println("잘못 입력했습니다. 다시 선택하세요.");
 					}
+
 				} catch (NumberFormatException e) {
 					System.out.println("[숫자만 입력 가능]");
 				}
-			} //while-isPointInfo
-		} //while-isLoggedIn
+
+				//마이포인트
+				while (isPointInfo) {
+					System.out.print("\n 1.포인트 조회 | 2.포인트 충전 | 3.뒤로가기 >>");
+					try {
+						int pChoice = Integer.parseInt(br.readLine());
+						if (pChoice == 1) {
+							pot.pointInfo(mem_id);
+						} else if (pChoice == 2) {
+							addPoint();
+						} else if (pChoice == 3){
+							System.out.println("이전 메뉴로 돌아갑니다.");
+							isPointInfo = false;  // 이전 메뉴
+							break;
+						} else {
+							System.out.println("잘못 입력했습니다. 다시 선택하세요.");
+						}
+					} catch (NumberFormatException e) {
+						System.out.println("[숫자만 입력 가능]");
+					}
+				} //while-isPointInfo
+			} //while-isLoggedIn
+		}
 
 	} //callMenu
 
@@ -146,7 +169,6 @@ public class MemberMain {
 
 		if (dao.loginCheck(mem_id, mem_pw)) {
 			System.out.println(mem_id + "님, 로그인 되었습니다.");
-			if (mem_id.equals("admin")) isAdmin = true;
 			isLoggedIn = true;
 		} else {
 			System.out.println("아이디 또는 비밀번호가 불일치합니다.");
@@ -217,6 +239,8 @@ public class MemberMain {
 	} //updateMemberInfo
 
 	private void addPoint() throws IOException {
+		System.out.println(); //개행
+		
 		System.out.println("[포인트 충전]");
 		System.out.print("포인트 숫자 입력");
 		int pt_value = Integer.parseInt(br.readLine());
@@ -224,13 +248,13 @@ public class MemberMain {
 		boolean add = pot.addPoint(mem_id, pt_value);
 
 		if(add) {
-			System.out.println("포인트 충전 완료");
+			System.out.println("★포인트 충전 완료★");
 		} else {
 			System.out.println("포인트를 다시 입력하세요.");
 		} //if-else
 
 	} //addPoint
-	
+
 
 
 
