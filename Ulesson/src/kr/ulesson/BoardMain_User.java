@@ -4,15 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class BoardMain {
+public class BoardMain_User {
 
    private BufferedReader br;
-   private BoardDAO boardDAO;
+   private BoardDAO_User boardDAO;
+   private String id = "admin";
 
-   public BoardMain() {
+   public BoardMain_User() {
       try {
          br = new BufferedReader(new InputStreamReader(System.in));
-         boardDAO = new BoardDAO();
+         boardDAO = new BoardDAO_User();
          // 메뉴 호출
          callMenu();
       } catch (Exception e) {
@@ -40,17 +41,6 @@ public class BoardMain {
                // 글쓰기
                String memId = null;
 
-               while (true) {
-                  System.out.print("회원 ID : ");                  
-                  memId = br.readLine();                  
-                  if (!boardDAO.isMemberExist(memId)) {
-                     System.out.println("------------------------------------------");
-                     System.out.println("잘못된 회원 ID입니다. 다시 입력해주세요.");
-                  } else {
-                     break; 
-                  }
-               }
-
                BoardCategoryDAO.selectAllBoardCategories();
 
                int bdCategory =0;
@@ -74,7 +64,7 @@ public class BoardMain {
                System.out.print("게시글 내용 : ");
                String bdContent = br.readLine();
 
-               boardDAO.insertBoard(memId, bdContent, bdCategory);
+               boardDAO.insertBoard(id, bdContent, bdCategory);
 
             } else if (no == 2) {
                // 목록보기
@@ -230,6 +220,6 @@ public class BoardMain {
    }
 
    public static void main(String[] args) {
-      new BoardMain();
+      new BoardMain_User();
    }
 }

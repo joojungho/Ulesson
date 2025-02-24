@@ -3,66 +3,103 @@ package kr.ulesson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import kr.util.DBUtil;
 
 public class BoardCommentDAO {
-	
-	// 댓글 작성
-	public void insertBoardComment(String memId, String BoardComment) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		String sql = null;
-		try {
-			conn = DBUtil.getConnection();
-			
-			sql = "INSERT INTO board_comment(cmt_num,mem_id,cmt_content,cmt_date)"
-					+"VALUES(?,?,?,	SYSDATE)";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,memId);
-			pstmt.setString(2, BoardComment);
-			
-			int count = pstmt.executeUpdate();
-			
-			System.out.println(count + "개의 댓글을 추가했습니다.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			DBUtil.executeClose(null, pstmt, conn);
-		}
-	}
-	//상세글보기-댓글쓰기전
-	public void selectBoardDetail(int bdNum) {
-	      Connection conn = null;
-	      PreparedStatement pstmt = null;
-	      ResultSet rs = null;
-	      String sql = null;
 
-	      try {
-	         conn = DBUtil.getConnection();
-	         sql = "SELECT b.bd_num, b.mem_id, b.bd_content, b.bd_category, b.bd_date, b.bd_recommend, bc.bdct_name " +
-	               "FROM board b " +
-	               "JOIN Board_Category bc ON b.bd_category = bc.bdct_num " +
-	               "WHERE b.bd_num = ?";
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setInt(1, bdNum);
-	         rs = pstmt.executeQuery();
+    // 댓글 작성
+    public void insertBoardComment(String memId, String commentContent, int bdNum) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String sql = "INSERT INTO board_comment (cmt_num, bd_num, mem_id, cmt_content, cmt_date) "
+                + "VALUES (bd_cmt_seq.NEXTVAL, ?, ?, ?, SYSDATE)";
 
-	         if (rs.next()) {
-	            System.out.println("------------------------------------------");
-	            System.out.println("글번호: " + rs.getInt("bd_num"));
-	            System.out.println("작성자: " + rs.getString("mem_id"));
-	            System.out.println("내용: " + rs.getString("bd_content"));
-	            System.out.println("카테고리: " + rs.getString("bdct_name"));
-	            System.out.println("작성일: " + rs.getDate("bd_date"));
-	            System.out.println("추천수:" + rs.getInt("bd_recommend"));
-	            
-	         }
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         DBUtil.executeClose(rs, pstmt, conn);
-	      }
-	   }
+        try {
+            conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, bdNum);
+            pstmt.setString(2, memId);  // 로그인한 사용자의 ID
+            pstmt.setString(3, commentContent);
 
-}//class
+            int count = pstmt.executeUpdate();
+            System.out.println(count + "개의 댓글이 작성되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.executeClose(null, pstmt, conn);
+        }
+    }
+
+    // 댓글 수정
+    public void updateComment(int cmtNum, String newContent) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String sql = "UPDATE board_comment SET cmt_content = ?, cmt_mdate = SYSDATE WHERE cmt_num = ?";
+
+        try {
+            conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, newContent);
+            pstmt.setInt(2, cmtNum);
+
+            int count = pstmt.executeUpdate();
+            if (count > 0) {
+                System.out.println(count + "개의 댓글이 수정되었습니다.");
+            } else {
+                System.out.println("댓글 수정 실패.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.executeClose(null, pstmt, conn);
+        }
+    }
+
+    // 댓글 삭제
+    public void deleteComment(int cmtNum) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        String sql = "DELETE FROM board_comment WHERE cmt_num = ?";
+
+        try {
+            conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, cmtNum);
+
+            int count = pstmt.executeUpdate();
+            if (count > 0) {
+                System.out.println(count + "개의 댓글이 삭제되었습니다.");
+            } else {
+                System.out.println("삭제할 댓글이 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.executeClose(null, pstmt, conn);
+        }
+    }
+
+    // 댓글 존재 여부 확인
+    public boolean isCommentExist(int cmtNum) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT COUNT(*) FROM board_comment WHERE cmt_num = ?";
+
+        try {
+            conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, cmtNum);
+            rs = pstmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.executeClose(rs, pstmt, conn);
+        }
+        return false;
+    }
+}
