@@ -16,6 +16,7 @@ public class MemberMain {
 	private boolean isMyPage;
 	private CategoryService categoryService;
 	private LessonService lessonService;
+	private NoticeMain noticeMain;
 
 	public MemberMain() {
 		try {
@@ -62,7 +63,7 @@ public class MemberMain {
 
 		// 로그인 후 추가 기능 메뉴
 		while (isLoggedIn) {
-			System.out.print("\n 1. 마이페이지 | 2. 마이포인트 | 3.장바구니 | 4.내학습 | 5. 강의 둘러보기 | 6. 종료 >> ");
+			System.out.print("\n 1. 마이페이지 | 2. 마이포인트 | 3.장바구니 | 4.내학습 | 5. 강의 둘러보기 | 6.공지사항 | 7. 종료 >> ");
 			try {
 				int choice = Integer.parseInt(br.readLine());
 				if (choice == 1) {
@@ -80,6 +81,8 @@ public class MemberMain {
 					int num = Integer.parseInt(br.readLine());
 					lessonService.viewLessonDetail(list.get(num - 1).getNumber());
 				} else if (choice == 6) {
+					noticeMain = new NoticeMain(null, false);
+				} else if (choice == 7) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
 				} else {
@@ -235,9 +238,9 @@ public class MemberMain {
 
 
 
-	public static void main(String[] args) {
-		new MemberMain();
-	} //main
+//	public static void main(String[] args) {
+//		new MemberMain();
+//	} //main
 
 
 } //class

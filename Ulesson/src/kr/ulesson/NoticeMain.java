@@ -6,29 +6,47 @@ import java.util.Scanner;
 
 public class NoticeMain {
     private UlessonMainYB mainMenu;
-    private boolean isLoggedIn;
     private boolean isAdmin = false;
+    private String[] option = {"모든 공지 및 이벤트 보기","공지 및 이벤트 작성","공지 및 이벤트 수정",
+    		"뒤로 가기","종료"};
 
-    public NoticeMain(UlessonMainYB mainMenu, boolean isLoggedIn) {
+    public NoticeMain(UlessonMainYB mainMenu, boolean isAdmin) {
         this.mainMenu = mainMenu;
-        this.isLoggedIn = isLoggedIn;
+        this.isAdmin = isAdmin;
+        try {
+			showNotice();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public static void main(String[] args) {
-        
+        new NoticeMain(null, false);
     }   
 
 	// 공지 목록을 조회하고 새로운 공지를 작성하는 메소드
 	public void showNotice() throws ClassNotFoundException {
 		NoticeDAO dao = new NoticeDAO();
 		Scanner scanner = new Scanner(System.in);
+		int cnt = 0;
 
 		while(true) {
-			System.out.println("1. 모든 공지 및 이벤트 보기");
-			System.out.println("2. 공지 및 이벤트 작성");
-			System.out.println("3. 공지 및 이벤트 수정");
-			System.out.println("4. 뒤로 가기");
-			System.out.println("5. 종료");
+//			System.out.println("1. 모든 공지 및 이벤트 보기");
+//			System.out.println("2. 공지 및 이벤트 작성");
+//			System.out.println("3. 공지 및 이벤트 수정");
+//			System.out.println("4. 뒤로 가기");
+//			System.out.println("5. 종료");
+			
+			for(int i = 0, k = 0; i < option.length; i++) {
+				if (!isAdmin && i < 3 && i > 0) {
+					cnt++;
+					continue;
+				} else {
+					k = i - cnt;
+				}
+				System.out.println( (k+1) + ". " + option[i]);
+			}
 			System.out.print("옵션을 선택하세요: ");
 
 			int option = scanner.nextInt();
@@ -76,14 +94,14 @@ public class NoticeMain {
 					}
 				}
 			}
-			else if (option == 2) { // 새로운 공지 작성
+			else if (option == 2-cnt) { // 새로운 공지 작성
 				while (true) {
 					// 관리자 ID입력
-					System.out.print("관리자 ID를 입력하세요: ");
-					String adminId = scanner.nextLine();
+//					System.out.print("관리자 ID를 입력하세요: ");
+//					String adminId = scanner.nextLine();
 
 					// 관리자 ID 일치하는지 확인
-					if ("admin".equals(adminId)) {
+					if (isAdmin) {
 						System.out.println("새로운 글을 작성하려면 내용을 입력하세요.");
 
 						System.out.print("공지나 이벤트 내용: ");
@@ -129,7 +147,7 @@ public class NoticeMain {
 						System.out.println("잘못된 입력입니다. 다시 입력하세요.");
 					}
 				}
-			} else if (option == 3) { // 공지글 수정 및 삭제
+			} else if (option == 3-cnt) { // 공지글 수정 및 삭제
 				while(true) {
 					System.out.println("1. 공지글 수정");
 					System.out.println("2. 공지글 삭제");
@@ -140,13 +158,13 @@ public class NoticeMain {
 					scanner.nextLine();
 
 					if (subOption == 1) { // 공지글 수정
-						// 관리자 ID입력
-						System.out.print("관리자 ID를 입력하세요: ");
-						String adminId = scanner.nextLine();
+//						// 관리자 ID입력
+//						System.out.print("관리자 ID를 입력하세요: ");
+//						String adminId = scanner.nextLine();
 
 						// 관리자 ID 일치하는지 확인
-						if ("admin".equals(adminId)) {				            
-							System.out.println("권한 확인되었습니다.");
+						if (isAdmin) {				            
+							//System.out.println("권한 확인되었습니다.");
 							System.out.print("수정할 공지글 번호를 입력하세요: ");
 							int ntNumToUpdate = scanner.nextInt();
 							scanner.nextLine();
@@ -173,11 +191,11 @@ public class NoticeMain {
 
 					} else if(subOption == 2) { // 공지글 삭제
 						// 관리자 ID입력
-						System.out.print("관리자 ID를 입력하세요: ");
-						String adminId = scanner.nextLine();
+//						System.out.print("관리자 ID를 입력하세요: ");
+//						String adminId = scanner.nextLine();
 
 						// 관리자 ID 일치하는지 확인
-						if ("admin".equals(adminId)) {
+						if (isAdmin) {
 							System.out.print("삭제할 공지글 번호를 입력하세요: ");
 							int ntNumToDelete = scanner.nextInt();
 							scanner.nextLine();
@@ -200,15 +218,15 @@ public class NoticeMain {
 						System.out.println("잘못된 입력입니다. 다시 입력하세요");						
 					}
 				}
-			} else if (option == 4) { // 뒤로가기
-				mainMenu.showMemberMenu();
-                break;
-			} else if (option == 5) { // 종료
+			} else if (option == 4-cnt) { // 뒤로가기
+				return;
+			} else if (option == 5-cnt) { // 종료
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
 			} else {
 				System.out.println("잘못된 입력입니다. 다시 입력하세요");
 			}
+			cnt = 0;
 		} // while
 	}
 }
