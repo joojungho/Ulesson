@@ -15,6 +15,7 @@ public class AdminMain {
 	private MemberDAO dao;
 	private boolean isAdminLoggedIn;
 	private LessonManager lessonManager;
+	private NoticeMain noticeMain;
 
 	public AdminMain() {
 		try {
@@ -54,7 +55,8 @@ public class AdminMain {
 			System.out.println("2. 회원 삭제");
 			System.out.println("3. 회원 권한 변경");
 			System.out.println("4. 강의 관리");
-			System.out.println("5. 로그아웃");
+			System.out.println("5. 공지사항 관리");
+			System.out.println("6. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -75,6 +77,9 @@ public class AdminMain {
 					lessonManager.lessonManage();
 					break;
 				case 5:
+					noticeMain = new NoticeMain(null, isAdminLoggedIn);
+					break;
+				case 6:
 					logout();
 					break;
 				default:
