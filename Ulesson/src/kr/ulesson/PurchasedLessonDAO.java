@@ -41,7 +41,7 @@ public class PurchasedLessonDAO {
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
-		}      
+		}              
 		return purchasedLessons;  // 결과 반환
 	}
 

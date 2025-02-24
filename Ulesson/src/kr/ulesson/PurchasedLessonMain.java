@@ -50,7 +50,7 @@ public class PurchasedLessonMain {
 					System.out.print("옵션을 선택하세요: ");
 					int subOption = scanner.nextInt();
 					scanner.nextLine();
-
+           
 					if (subOption == 1) {
 						System.out.print("환불할 강의 번호를 입력하세요: ");
 						int pchStatusToUpdate = scanner.nextInt();

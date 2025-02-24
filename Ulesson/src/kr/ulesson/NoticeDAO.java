@@ -10,7 +10,7 @@ import java.util.Date;
 import java.sql.Types;
 
 import kr.util.DBUtil;  // DB 연결을 위한 util 클래스
-
+                  
 public class NoticeDAO {
 
 	// 모든 공지 및 이벤트 목록을 조회

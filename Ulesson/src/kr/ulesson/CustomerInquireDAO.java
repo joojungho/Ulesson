@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.util.DBUtil;
-
+                             
 public class CustomerInquireDAO {
 
 	// 모든 문의글 보기

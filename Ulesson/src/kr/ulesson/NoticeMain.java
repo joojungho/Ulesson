@@ -3,7 +3,7 @@ package kr.ulesson;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-
+                                  
 public class NoticeMain {
     private UlessonMainYB mainMenu;
     private boolean isLoggedIn;

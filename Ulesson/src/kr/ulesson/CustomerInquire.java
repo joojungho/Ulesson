@@ -1,7 +1,7 @@
 package kr.ulesson;
 
 import java.sql.Date;
-
+                      
 public class CustomerInquire {
     private int iqNum;      // 문의글 번호
     private String iqCate;  // 문의글 항목

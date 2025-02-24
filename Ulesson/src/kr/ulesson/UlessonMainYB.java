@@ -80,7 +80,7 @@ public class UlessonMainYB {
 									System.exit(0);
 								} else {
 									System.out.println("잘못 입력했습니다.");
-								}
+								}       
 							} catch (NumberFormatException e) {
 								System.out.println("[숫자만 입력 가능]");
 							}
