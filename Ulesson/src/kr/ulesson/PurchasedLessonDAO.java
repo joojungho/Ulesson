@@ -17,16 +17,17 @@ public class PurchasedLessonDAO {
 
 		String sql = "SELECT p.pch_num, p.les_num, p.mem_id, p.pch_date, p.pch_status, l.les_name " +
 				"FROM purchased_lesson p " +
-				"JOIN lesson l ON p.les_num = l.les_num"
-				+"WHERE MEM_ID";
+				"JOIN lesson l ON p.les_num = l.les_num "
+				+"WHERE p.MEM_ID=?";
 
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);
-				ResultSet rs = pstmt.executeQuery()){
+				){
 
 			// MEM_ID 파라미터 설정
 			pstmt.setString(1, memId);
-
+			
+			ResultSet rs = pstmt.executeQuery();
 			// 결과 처리
 			while (rs.next()) {
 				int pchNum = rs.getInt("pch_num");

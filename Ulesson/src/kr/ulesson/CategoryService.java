@@ -38,7 +38,12 @@ public class CategoryService {
 			list = dao.selectCategory(name);
 			System.out.print("카테고리 선택: ");
 			num = Integer.parseInt(br.readLine());
+			try {
 			name = list.get(num - 1).getName();
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("잘못된 항목을 선택하였습니다.");
+				continue;
+			}
 			cnt++;
 		}while(cnt < MAX_DEPTH - depth);
 		return list.get(num - 1);
@@ -48,7 +53,7 @@ public class CategoryService {
 		System.out.print("삭제할 카테고리를 선택하시오");
 		Item item = viewCategory(null);
 		dao.deleteCategory(item.getName());
-		
+
 		if(dao.selectCategory(item.getName()).isEmpty()) {
 			dao.updateDepth(item.getNumber());
 		}

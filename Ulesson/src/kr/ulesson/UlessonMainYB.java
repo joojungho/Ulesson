@@ -56,8 +56,8 @@ public class UlessonMainYB {
 									showmylesson();
 								} else if (no2 == 4) {
 									// 구매내역으로 이동
-									PurchasedLessonMain purchasedLesson = new PurchasedLessonMain(this, isLoggedIn);
-									purchasedLesson.showPurchasedLessons();
+									//PurchasedLessonMain purchasedLesson = new PurchasedLessonMain(this, isLoggedIn);
+									//purchasedLesson.showPurchasedLessons();
 								} else if (no2 == 5) {
 									// 위시리스트로 이동
 									showwishlist();

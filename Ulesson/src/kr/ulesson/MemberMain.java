@@ -74,13 +74,25 @@ public class MemberMain {
 				if (choice == 1) {
 					isMyPage = true;
 				} else if (choice == 2) {
-					// 강의 카테고리 선택
-					Item result = categoryService.viewCategory(null);
-					ArrayList<Item> list = lessonService.viewLesson(result.getName());
+					ArrayList<Item> list = null;
+					System.out.print("\n 1. 카테고리로 검색 2. 전체 검색 >>");
+					choice = Integer.parseInt(br.readLine());
+
+					if (choice == 2) {
+						list = lessonService.searchLesson();
+
+					} else {
+						// 강의 카테고리 선택
+						Item result = categoryService.viewCategory(null);
+						list = lessonService.viewLesson(result.getName());
+					}
+					
+					if(list.isEmpty()) continue;
 
 					// 강의 선택
-					System.out.print("강의를 선택하세요: ");
+					System.out.print("강의를 선택하세요(뒤로가기 0): ");
 					int num = Integer.parseInt(br.readLine());
+					if(num == 0) continue;
 					int lesNum = list.get(num - 1).getNumber();
 
 					// 강의 상세 정보 출력
@@ -114,10 +126,12 @@ public class MemberMain {
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("[숫자만 입력 가능]");
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("[잘못된 항목 선택]");
 			}
 			//마이페이지
 			while (isMyPage) {
-				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 뒤로가기 >> ");
+				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 리뷰 관리 | 7. 구매내역  | 8. 뒤로가기>> ");
 				System.out.println(); //개행
 
 				try {
@@ -152,6 +166,16 @@ public class MemberMain {
 						new CustomerInquireMain_User(null, true, mem_id);
 						break;
 					case 6:
+						new ReviewService(br).deleteMyReview(mem_id);
+						break;
+					case 7:
+						try {
+							new PurchasedLessonMain(mem_id, isLoggedIn);
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+						break;
+					case 8:
 						System.out.println("이전 메뉴로 돌아갑니다.");
 						isMyPage = false;
 						break;

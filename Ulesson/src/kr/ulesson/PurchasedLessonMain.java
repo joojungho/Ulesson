@@ -8,16 +8,13 @@ public class PurchasedLessonMain {
 	private boolean isLoggedIn;
 	private String mem_id;
 
-	public PurchasedLessonMain(UlessonMainYB mainMenu, boolean isLoggedIn) {
+	public PurchasedLessonMain(String id, boolean isLoggedIn) throws ClassNotFoundException {
 		this.mainMenu = mainMenu;
 		this.isLoggedIn = isLoggedIn;
-		this.mem_id = mainMenu.getMemId();
+		this.mem_id = id;
+		
+		showPurchasedLessons();
 	}
-
-	public static void main(String[] args) {		
-
-	}
-
 
 	public void showPurchasedLessons() throws ClassNotFoundException {
 		PurchasedLessonDAO dao = new PurchasedLessonDAO();
@@ -76,8 +73,7 @@ public class PurchasedLessonMain {
 				} // while
 				
 			} else if (option == 2){ // 뒤로가기
-				mainMenu.showMemberMenu();
-				break;
+				return;
 			} else if (option == 3) { // 종료
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
