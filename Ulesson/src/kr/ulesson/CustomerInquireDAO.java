@@ -175,5 +175,10 @@ public class CustomerInquireDAO {
 		}
 		return false;
 	}
+	
+	
+	
+	
+	
 
 }

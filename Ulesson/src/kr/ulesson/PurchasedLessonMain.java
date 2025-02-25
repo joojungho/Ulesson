@@ -34,7 +34,7 @@ public class PurchasedLessonMain {
 			
 			if (option == 1) { // 구매내역 조회
 				while(true) {
-					List<PurchasedLesson> purchasedLessons = dao.getAllPurchasedLessons();
+					List<PurchasedLesson> purchasedLessons = dao.getAllPurchasedLessons(mem_id);
 					if (purchasedLessons.isEmpty()) {
 						System.out.println("구매된 강의가 없습니다.");
 					} else {
