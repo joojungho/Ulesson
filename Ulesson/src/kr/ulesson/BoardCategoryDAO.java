@@ -71,7 +71,7 @@ public class BoardCategoryDAO {
         
       try {
           conn = DBUtil.getConnection();
-          sql = "SELECT * FROM board_category ORDER BY bdct_num DESC";
+          sql = "SELECT * FROM board_category ORDER BY bdct_num ASC";
           pstmt = conn.prepareStatement(sql);
           rs = pstmt.executeQuery();
     	  
