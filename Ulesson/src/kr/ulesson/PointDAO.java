@@ -96,4 +96,85 @@ public class PointDAO {
 	} //pointInfo
 
 
+	public boolean minusPointsForLesson(String memId, int lesNum) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmt4 = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			conn.setAutoCommit(false); // 트랜잭션 시작
+
+			// 강의 가격 조회
+			String sql = "SELECT les_price FROM lesson WHERE les_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, lesNum);
+			rs = pstmt.executeQuery();
+
+			if (!rs.next()) {
+				System.out.println("해당 강의를 찾을 수 없습니다.");
+				return false;
+			}
+			int lesPrice = rs.getInt("les_price");
+
+			// 차감될 강의 가격
+			int minusPoint = lesPrice;
+
+			// 현재 내 포인트 확인
+			String sql2 = "SELECT mem_point FROM member WHERE mem_id = ?";
+			pstmt2 = conn.prepareStatement(sql2);
+			pstmt2.setString(1, memId);
+			rs2 = pstmt2.executeQuery();
+
+			if (!rs2.next()) {
+				System.out.println("회원 정보를 찾을 수 없습니다.");
+				return false;
+			}
+			int myPoint = rs2.getInt("mem_point");
+
+			if ( myPoint < minusPoint) {
+				System.out.println("포인트가 부족하여 구매할 수 없습니다..");
+				conn.rollback();
+				return false;
+			}
+
+			// 포인트 차감
+			String sql3 = "INSERT INTO point (pt_num, mem_id, pt_value) " +
+					"VALUES (point_seq.NEXTVAL, ?, ?)";
+			pstmt3 = conn.prepareStatement(sql3);
+			pstmt3.setString(1, memId);
+			pstmt3.setInt(2, -minusPoint); // 차감이므로 음수 값
+			pstmt3.executeUpdate();
+
+			// member point update
+			String sql4 = "UPDATE member SET mem_point = ( SELECT mem_point - ? FROM member WHERE mem_id = ?) WHERE mem_id = ?";
+			pstmt4 = conn.prepareStatement(sql4);
+			pstmt4.setInt(1, minusPoint);
+			pstmt4.setString(2, memId);
+			pstmt4.setString(3, memId);
+			pstmt4.executeUpdate();
+
+			conn.commit(); // 트랜잭션 커밋
+			System.out.println(memId + "님의 포인트가 " + minusPoint + " 차감되었습니다. (남은 포인트: " + (myPoint - minusPoint) + ")");
+			
+			return true;
+		} catch (Exception e) {
+			try {
+				if (conn != null) conn.rollback(); // 오류 발생 시 롤백
+			} catch (Exception se) {
+				se.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			DBUtil.executeClose(rs, pstmt, null);
+			DBUtil.executeClose(rs2, pstmt2, null);
+			DBUtil.executeClose(null, pstmt3, null);
+			DBUtil.executeClose(null, pstmt4, conn);
+		}
+		return false;
+	}
 } //class

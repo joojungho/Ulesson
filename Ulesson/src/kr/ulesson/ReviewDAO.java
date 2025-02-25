@@ -54,7 +54,8 @@ public class ReviewDAO {
 	}
 	
 	// 리뷰 조회(해당 사용자의)
-		public void selectReview(String id) {
+		public ArrayList<Item> selectReview(String id) {
+			ArrayList<Item> list = new ArrayList<Item>();
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -77,12 +78,13 @@ public class ReviewDAO {
 				
 				if(rs.next()) {
 					do {
-						System.out.println("작성자: " + rs.getString("m.mem_name"));
+						System.out.println("작성자: " + rs.getString("mem_name"));
 						System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-						System.out.println(rs.getString("r.rv_content"));
-						System.out.println("\t\t" + rs.getInt("r.rv_score") + "점");
+						System.out.println(rs.getString("rv_content"));
+						System.out.println("\t\t" + rs.getInt("rv_score") + "점");
 						System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 						System.out.println();
+						list.add(new Item(rs.getInt("rv.num"), rs.getString("mem_name")));
 					} while (rs.next());
 				} else {
 					System.out.println("표시할 데이터가 없습니다.");
@@ -94,6 +96,7 @@ public class ReviewDAO {
 			} finally {
 				DBUtil.executeClose(rs, pstmt, conn);
 			}
+			return list;
 		}
 	
 	//리뷰 작성
@@ -124,6 +127,8 @@ public class ReviewDAO {
 		} finally {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
+		
+		
 		return flag;
 	}
 	
@@ -157,5 +162,35 @@ public class ReviewDAO {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 		return flag;
+	}
+	
+	public void updateLessonScore() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+
+		try {
+			//JDBC 수행 1,2단계
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "UPDATE lesson SET les_score=(SELECT AVG() WHERE ";
+			//JDBC 수행 3단계
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			//pstmt.setInt(1, num);
+
+			//JDBC 수행 4단계
+			int count = pstmt.executeUpdate();
+			if (count > 0) {
+				flag = true;
+				System.out.println("리뷰를 삭제했습니다.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//자원정리
+			DBUtil.executeClose(null, pstmt, conn);
+		}
 	}
 }

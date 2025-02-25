@@ -3,12 +3,8 @@ package kr.ulesson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
-import kr.util.DBUtil;
 
 public class AdminMain {
 	private BufferedReader br;
@@ -56,7 +52,8 @@ public class AdminMain {
 			System.out.println("3. 회원 권한 변경");
 			System.out.println("4. 강의 관리");
 			System.out.println("5. 공지사항 관리");
-			System.out.println("6. 로그아웃");
+			System.out.println("6. 문의사항 관리");			
+			System.out.println("7. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -80,6 +77,9 @@ public class AdminMain {
 					noticeMain = new NoticeMain(null, isAdminLoggedIn);
 					break;
 				case 6:
+					new CustomerInquireMain_Admin(null, true);
+					break;
+				case 7:
 					logout();
 					break;
 				default:
