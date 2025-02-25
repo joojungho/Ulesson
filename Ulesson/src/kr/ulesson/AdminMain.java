@@ -3,12 +3,8 @@ package kr.ulesson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
-import kr.util.DBUtil;
 
 public class AdminMain {
 	private BufferedReader br;
@@ -184,7 +180,7 @@ public class AdminMain {
 		System.out.println("관리자 로그아웃되었습니다.");
 	}
 
-	public static void main(String[] args) {
-		new AdminMain();
-	}
+//	public static void main(String[] args) {
+//		new AdminMain();
+//	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class LessonService {
 	
+	private String id;
 	private LessonDAO dao = new LessonDAO();
 	private BufferedReader br;
 	private CategoryService categoryService;
@@ -15,6 +16,10 @@ public class LessonService {
 		this.br = br;
 		this.categoryService = new CategoryService(br);
 		this.reviewService = new ReviewService(br);
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public void addLesson() throws IOException {
@@ -72,6 +77,7 @@ public class LessonService {
 		switch (num) {
 			case 1:
 				reviewService.viewReviewLec(lesNum);
+				reviewService.insertReview(lesNum, id);
 				break;
 			case 2:
 				break;
