@@ -11,7 +11,7 @@ import kr.util.DBUtil;
 
 public class PurchasedLessonDAO {
 
-	// 데이터 조회
+	// 데이터 조회(로그인 한 mem_id)
 	public List<PurchasedLesson> getAllPurchasedLessons(String memId) {
 		List<PurchasedLesson> purchasedLessons = new ArrayList<>();        
 

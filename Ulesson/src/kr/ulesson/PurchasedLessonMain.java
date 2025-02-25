@@ -30,7 +30,7 @@ public class PurchasedLessonMain {
 			System.out.print("옵션을 선택하세요: ");
 			
 			int option = scanner.nextInt();
-			scanner.nextLine();  // 버퍼 비우기
+			scanner.nextLine();
 			
 			if (option == 1) { // 구매내역 조회
 				while(true) {
