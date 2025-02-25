@@ -6,220 +6,313 @@ import java.io.InputStreamReader;
 
 public class BoardMain_User {
 
-   private BufferedReader br;
-   private BoardDAO_User boardDAO;
-   private String id = "admin";
+	private BufferedReader br;
+	private BoardDAO_User boardDAO;
+	private String id = "admin";
 
-   public BoardMain_User() {
-      try {
-         br = new BufferedReader(new InputStreamReader(System.in));
-         boardDAO = new BoardDAO_User();
-         // 메뉴 호출
-         callMenu();
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         // 자원 정리
-         if (br != null)
-            try {
-               br.close();
-            } catch (IOException e) {
-            }
-      }
-   }
+	public BoardMain_User() {
+		try {
+			br = new BufferedReader(new InputStreamReader(System.in));
+			boardDAO = new BoardDAO_User();
+			// 메뉴 호출
+			callMenu();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 자원 정리
+			if (br != null)
+				try {
+					br.close();
+				} catch (IOException e) {
+				}
+		}
+	}
 
-   // 메뉴
-   private void callMenu() throws IOException {
-      while (true) {
-         System.out.println("------------------------------------------");
-         System.out.print("1.글쓰기, 2.목록보기, 3.상세글보기, 4.글수정, 5.글삭제, 6.종료 > ");
+	// 메뉴
+	private void callMenu() throws IOException {
+		while (true) {
+			System.out.println("------------------------------------------");
+			System.out.print("1.게시글 작성, 2.게시글 추천하기, 3.게시글 보기, 4.게시글 수정, 5.게시글 삭제, 6.종료 > ");
 
-         try {
-            int no = Integer.parseInt(br.readLine());
-            
-            if (no == 1) {
-               // 글쓰기
-               String memId = null;
+			try {
+				int no = Integer.parseInt(br.readLine());
 
-               BoardCategoryDAO.selectAllBoardCategories();
+				if (no == 1) {
+					// 글쓰기
 
-               int bdCategory =0;
+					BoardCategoryDAO.selectAllBoardCategories();
 
-               while(true) {
-                  System.out.println("------------------------------------------");
-                  System.out.print("카테고리 번호를 선택 : ");                              
-                  try {
-                     bdCategory = Integer.parseInt(br.readLine());
-                     if (!boardDAO.isBDCT_numExist(bdCategory)) {
-                        System.out.println("존재하지 않는 카테고리 번호입니다. 다시 입력해주세요.");                             
-                     }else {
-                        break;
-                     }
+					int bdCategory =0;
 
-                  } catch (NumberFormatException e) {
-                     System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-                  }
+					while(true) {
+						System.out.println("------------------------------------------");
+						System.out.print("카테고리 번호 선택 : ");                              
+						try {
+							bdCategory = Integer.parseInt(br.readLine());
+							if (!boardDAO.isBDCT_numExist(bdCategory)) {
+								System.out.println("존재하지 않는 카테고리 번호입니다. 다시 입력해주세요.");                             
+							}else {
+								break;
+							}
 
-               }               
-               System.out.print("게시글 내용 : ");
-               String bdContent = br.readLine();
+						} catch (NumberFormatException e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+						}
 
-               boardDAO.insertBoard(id, bdContent, bdCategory);
+					}
+					System.out.print("게시글 제목 : ");
+					String bdTitle = br.readLine();
+					System.out.print("게시글 내용 : ");
+					String bdContent = br.readLine();
 
-            } else if (no == 2) {
-               // 목록보기
-               boardDAO.selectAllBoards();
+					boardDAO.insertBoard(id, bdContent, bdCategory, bdTitle);
 
-            } else if (no == 3) {
-               // 상세글보기
-               boardDAO.selectAllBoards();
+				} else if (no == 2) {
+					// 글 추천하기
+					boardDAO.selectAllBoards();
+
+					int bdNum=0;
+					while(true) {
+						try {
+							System.out.println("------------------------------------------");
+							System.out.print("추천할 글의 번호 : ");
+							bdNum = Integer.parseInt(br.readLine());
+							//게시글 존재 확인
+							if (!boardDAO.isBoardNumberExist(bdNum)) {
+								System.out.println("존재하지 않는 글 번호입니다. 다시 입력해주세요.");                  
+							}else {
+								break;
+							}
+						} catch (Exception e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+						}
+					}
+					boardDAO.recommendBoard(bdNum); 
+
+				} else if (no == 3) {
+					// 상세글보기           
+					BoardCategoryDAO.selectAllBoardCategories();
+
+					int bdNum = 0;
+					int bdctNum = 0;
+					while (true) {
+						try {
+							System.out.println("------------------------------------------");
+							System.out.print("선택할 카테고리의 번호 : ");
+							bdctNum = Integer.parseInt(br.readLine()); 
+
+							// 카테고리 확인
+							if (!boardDAO.isBDCT_numExist(bdctNum)) {                        
+								System.out.println("존재하지 않는 카테고리입니다. 다시 입력해주세요.");
+							} else {
+								// 카테고리에 게시물이 있는지 확인
+								boolean existBoardByCategory = boardDAO.existBoardByCategory(bdctNum); // 카테고리에 게시물이 있는지 확인하는 메서드 호출
+
+								if (!existBoardByCategory) {
+									System.out.println("이 카테고리에는 게시물이 없습니다. 다른 카테고리를 선택해주세요.");
+								} else {
+
+									boardDAO.selectBoardByCategory(bdctNum);
+									break;
+								}
+							}   
+
+						} catch (Exception e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+						}
+					}
+					while (true) {
+						try {                  
+							System.out.println("------------------------------------------");
+							System.out.print("선택할 게시글의 번호 : ");
+							bdNum = Integer.parseInt(br.readLine());   
+
+							// 게시글 존재 확인
+							if (!boardDAO.isBoardNumberExist(bdNum)) {                        
+								System.out.println("존재하지 않는 글 번호입니다. 다시 입력해주세요.");                  
+							}else {
+								break;
+							}         
+						} catch (NumberFormatException e) {                  
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");         
+						}
+					}
+					boardDAO.selectBoardDetail(bdNum);
+					while (true) {
+						System.out.println("------------------------------------------");
+						System.out.println("1. 댓글 보기");
+						System.out.println("2. 게시글 추천하기");
+						System.out.println("3. 메뉴로 돌아가기");
+						System.out.println("------------------------------------------");
+						System.out.print("숫자를 입력하시오 : ");
+
+						int choice = 0;
+						try {
+							choice = Integer.parseInt(br.readLine());
+						} catch (Exception e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+							continue;
+						}
+
+						if (choice == 1) {
+							// 댓글 보기
+							//BoardCategoryDAO.selectAllBoardCategories();
+							int bdct_Num = 0;
+							callMenu();
+							return;
+						} else if (choice == 2) {
+
+							// 게시글 추천하기               	   
+							boardDAO.recommendBoard(bdNum); 
+							callMenu();
+							return;
+						} else if (choice == 3) {
+							// 메뉴로 돌아가기                      
+							callMenu();
+							return;   
+
+						}   else {
+							System.out.println("올바른 번호를 입력해주세요.");
+						}
+					}        
+
+				} else if (no == 4) {
+
+					// 글수정
+					String memId = id;               
+					boardDAO.MyBoard(id);
+					int bdNum = 0;
+
+					while(true) {
+						try {
+							System.out.println("------------------------------------------");
+							System.out.print("수정할 글의 번호 : ");            
+							bdNum = Integer.parseInt(br.readLine());                     
+							// 게시글 존재 확인
+							if (!boardDAO.isBoardNumberExist(bdNum)) {                        
+								System.out.println("작성하지 않은 게시글 번호입니다. 다시 입력해주세요.");                           
+							}else {
+								if (!boardDAO.isWriter(bdNum, memId)) {
+									System.out.println("본인이 작성한 게시글만 수정할 수 있습니다.");
+								}else {
+									break;
+								}
+							}
+						} catch (Exception e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+						}
+					}
+					while (true) {
+						System.out.println("------------------수정목록-----------------");
+						System.out.println("1. 카테고리 수정");
+						System.out.println("2. 제목 수정");
+						System.out.println("3. 내용 수정");
+						System.out.println("4. 수정 종료");
+						System.out.println("------------------------------------------");
+						System.out.print("수정할 항목을 선택하세요: ");
+
+						int choice = 0;
+						try {
+							choice = Integer.parseInt(br.readLine());
+						} catch (Exception e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+							continue;
+						}
+
+						if (choice == 1) {
+							// 카테고리 수정
+							BoardCategoryDAO.selectAllBoardCategories();
+							int bdct_Num = 0;
+							while (true) {
+								try {
+									System.out.println("---------------------------------------------");
+									System.out.print("수정할 카테고리 번호 : ");
+									bdct_Num = Integer.parseInt(br.readLine());
+
+									if (!boardDAO.isBDCT_numExist(bdct_Num)) {
+										System.out.println("유효하지 않은 카테고리 번호입니다. 다시 입력해주세요.");
+									} else {
+										boardDAO.updateBoardCategory(bdNum, bdct_Num);
+										System.out.println("카테고리가 수정되었습니다.");
+										callMenu();
+										return;
+									}
+								} catch (Exception e) {
+									System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+								}
+							}
+						} else if (choice == 2) {
+							// 제목 수정
+							System.out.print("수정할 제목 입력 : ");
+							String newTitle = br.readLine();
+							boardDAO.updateBoardTitle(bdNum, newTitle);
+							System.out.println("제목이 수정되었습니다.");
+							callMenu();
+							return;
+						} else if (choice == 3) {
+							// 내용 수정
+							System.out.print("수정할 게시글 내용 입력: ");
+							String newContent = br.readLine();
+							boardDAO.updateBoardContent(bdNum, newContent);
+							System.out.println("내용이 수정되었습니다.");
+							callMenu();
+							return;     
+						} else if (choice == 4) {
+							// 수정 종료
+							System.out.println("수정이 종료되었습니다.");
+							callMenu();
+							return;
+						}   else {
+							System.out.println("올바른 번호를 입력해주세요.");
+						}
+					}        
 
 
-               
-               int bdNum = 0;
-               while (true) {
-                  try {                  
-                     System.out.println("------------------------------------------");
-                     System.out.print("선택할 게시글의 번호 : ");
-                     bdNum = Integer.parseInt(br.readLine());   
+				} else if (no == 5) {
+					// 글삭제
+					String memId = id;
+					boardDAO.MyBoard(id);
 
-                     // 게시글 존재 확인
-                     if (!boardDAO.isBoardNumberExist(bdNum)) {                        
-                        System.out.println("존재하지 않는 글 번호입니다. 다시 입력해주세요.");                  
-                     }else {
-                        break;
-                     }         
-                  } catch (NumberFormatException e) {                  
-                     System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");         
-                  }
-               }
-               boardDAO.selectBoardDetail(bdNum);
+					int bdNum=0;
+					while(true) {
+						try {
+							System.out.println("------------------------------------------");
+							System.out.print("삭제할 글의 번호 : ");
+							bdNum = Integer.parseInt(br.readLine());
+							//게시글 존재 확인
+							if (!boardDAO.isBoardNumberExist(bdNum)) {
+								System.out.println("존재하지 않는 글 번호입니다. 다시 입력해주세요.");                  
+							}else {
+								if (!boardDAO.isWriter(bdNum, memId)) {
+									System.out.println("본인이 작성한 게시글만 수정할 수 있습니다.");
+								} else {
+									break;
+								}
 
-            } else if (no == 4) {
+							}
+						} catch (Exception e) {
+							System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+						}
+					}
+					boardDAO.deleteBoard(bdNum);         
 
-               // 글수정
-               String memId = null;
-               while (true) {
-                  System.out.println("------------------------------------------");
-                  System.out.print("회원 ID:");
-                  memId = br.readLine();
+				} else if (no == 6) {
+					// 종료
+					System.out.println("------------------------------------------");
+					System.out.println("프로그램을 종료합니다.");
+					break;
+				} else {
+					System.out.println("------------------------------------------");
+					System.out.println("잘못 입력했습니다. 다시 입력해주세요.");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("------------------------------------------");
+				System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+			}
+		}
+	}
 
-                  if (!boardDAO.isMemberExist(memId)) {
-                     System.out.println("잘못된 회원 ID입니다. 다시 입력해주세요.");               
-
-                  } else {
-                     break;
-                  }
-               }
-
-               boardDAO.MyBoard(memId);
-               int bdNum = 0;
-
-               while(true) {
-                  try {
-                     System.out.println("------------------------------------------");
-                     System.out.print("수정할 글의 번호 : ");            
-                     bdNum = Integer.parseInt(br.readLine());                     
-                     // 게시글 존재 확인
-                     if (!boardDAO.isBoardNumberExist(bdNum)) {                        
-                        System.out.println("작성하지 않은 게시글 번호입니다. 다시 입력해주세요.");                           
-                     }else {
-                        if (!boardDAO.isWriter(bdNum, memId)) {
-                           System.out.println("본인이 작성한 게시글만 수정할 수 있습니다.");
-                        }else {
-                           break;
-                        }
-
-
-                     }
-                  } catch (Exception e) {
-                     System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-                  }
-               }
-               System.out.println("------------------------------------------");
-               System.out.println("수정 전 내용");               
-               boardDAO.selectBoardDetail(bdNum);
-               BoardCategoryDAO.selectAllBoardCategories();
-               int bdct_Num = 0;
-               while (true) {
-                  try {
-                     System.out.println("------------------------------------------");
-                     System.out.print("수정할 카테고리 번호 : ");
-                     bdct_Num = Integer.parseInt(br.readLine());
-
-                     // 유효한 카테고리 번호인지 확인
-                     if (!boardDAO.isBDCT_numExist(bdct_Num)) {
-                        System.out.println("유효하지 않은 카테고리 번호입니다. 다시 입력해주세요.");
-                     } else {
-                        break;
-                     }
-                  } catch (Exception e) {
-                     System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-                  }
-               }               
-               System.out.print("수정할 게시글 내용 : ");
-               String bdContent = br.readLine();
-
-               // 게시글 내용 및 카테고리 번호 수정
-               boardDAO.updateBoard(bdNum, bdContent, bdct_Num);            
-
-            } else if (no == 5) {
-               // 글삭제
-               String memId = null;
-               while (true) {
-                  System.out.println("------------------------------------------");
-                  System.out.print("회원 ID : ");
-                  memId = br.readLine();
-
-                  if (!boardDAO.isMemberExist(memId)) {
-                     System.out.println("잘못된 회원 ID입니다. 다시 입력해주세요.");                     
-                  } else {
-                     break; 
-                  }
-               } 
-
-               boardDAO.MyBoard(memId);
-
-               int bdNum=0;
-               while(true) {
-                  try {
-                     System.out.println("------------------------------------------");
-                     System.out.print("삭제할 글의 번호 : ");
-                     bdNum = Integer.parseInt(br.readLine());
-                     //게시글 존재 확인
-                     if (!boardDAO.isBoardNumberExist(bdNum)) {
-                        System.out.println("존재하지 않는 글 번호입니다. 다시 입력해주세요.");                  
-                     }else {
-                        if (!boardDAO.isWriter(bdNum, memId)) {
-                           System.out.println("본인이 작성한 게시글만 수정할 수 있습니다.");
-                        } else {
-                           break;
-                        }
-                        
-                     }
-                  } catch (Exception e) {
-                     System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-                  }
-               }
-               boardDAO.deleteBoard(bdNum);         
-
-            } else if (no == 6) {
-               // 종료
-               System.out.println("------------------------------------------");
-               System.out.println("프로그램을 종료합니다.");
-               break;
-            } else {
-               System.out.println("------------------------------------------");
-               System.out.println("잘못 입력했습니다. 다시 입력해주세요.");
-            }
-         } catch (NumberFormatException e) {
-            System.out.println("------------------------------------------");
-            System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-         }
-      }
-   }
-
-   public static void main(String[] args) {
-      new BoardMain_User();
-   }
+	public static void main(String[] args) {
+		new BoardMain_User();
+	}
 }

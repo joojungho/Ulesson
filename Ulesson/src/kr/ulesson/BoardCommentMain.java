@@ -1,105 +1,96 @@
 package kr.ulesson;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class BoardCommentMain {
 
     private BufferedReader br;
     private BoardCommentDAO boardCommentDAO;
-    private BoardDAO_User boardDAO;
-    private String mem_id;
+    private String id = "admin";
 
-    public BoardCommentMain(String memId) {
+    public BoardCommentMain() {
         try {
-            this.mem_id = memId;  // 로그인된 사용자 ID 설정
             br = new BufferedReader(new InputStreamReader(System.in));
             boardCommentDAO = new BoardCommentDAO();
-            boardDAO = new BoardDAO_User();  
+            // 메뉴 호출
             callMenu();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            // 자원 정리
             if (br != null) {
                 try {
                     br.close();
-                } catch (Exception e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
 
-    // 메뉴 호출
-    private void callMenu() {
+    // 메뉴
+    private void callMenu() throws IOException {
         while (true) {
             System.out.println("------------------------------------------");
-            System.out.print("1.댓글 작성, 2.댓글 수정, 3.댓글 삭제, 4.종료 > ");
-            
+            System.out.print("1. 댓글 추가, 2. 댓글 삭제, 3. 댓글 목록 조회, 4. 종료 > ");
             try {
-                int no = Integer.parseInt(br.readLine());
-                
-                if (no == 1) {
-                    // 댓글 작성
+                int num = Integer.parseInt(br.readLine());
+
+                if (num == 1) {
+                    // 댓글 추가
                     int bdNum = 0;
+                  
+                    // 게시글 번호 입력
                     while (true) {
-                        try {
-                            boardDAO.selectAllBoards();  // boardDAO 초기화된 객체 사용
-                            System.out.println("------------------------------------------");
-                            System.out.print("댓글을 작성할 글의 번호 : ");
-                            bdNum = Integer.parseInt(br.readLine());
-                            // 게시글 존재 확인
-                            if (!boardDAO.isBoardNumberExist(bdNum)) {
-                                System.out.println("존재하지 않는 게시글 번호입니다. 다시 입력해주세요.");
-                            } else {
-                                break;  // 유효한 게시글 번호면 루프 종료
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+                        System.out.println("------------------------------------------");
+                        System.out.print("댓글을 추가할 게시글 번호를 입력하세요: ");
+                        bdNum = Integer.parseInt(br.readLine());
+
+                        if (bdNum <= 0) {
+                            System.out.println("유효하지 않은 게시글 번호입니다.");
+                        } else {
+                            break;
                         }
                     }
-                    
-                    System.out.print("댓글 내용 : ");
-                    String commentContent = br.readLine();
-                    
-                    // 댓글 작성 메서드 호출
-                    boardCommentDAO.insertBoardComment(mem_id, commentContent, bdNum);
 
-                } else if (no == 2) {
-                    // 댓글 수정
-                    System.out.print("수정할 댓글 번호를 입력하세요: ");
-                    int cmtNum = Integer.parseInt(br.readLine());
+                    System.out.print("댓글 내용을 입력하세요: ");
+                    String cmtContent = br.readLine();
 
-                    System.out.print("수정할 댓글 내용을 입력하세요: ");
-                    String newContent = br.readLine();
+                    boardCommentDAO.insertBoardComment(id,cmtContent, bdNum);
 
-                    // 댓글 수정 메서드 호출
-                    boardCommentDAO.updateComment(cmtNum, newContent);
-
-                } else if (no == 3) {
+                } else if (num == 2) {
                     // 댓글 삭제
+                    System.out.println("------------------------------------------");
                     System.out.print("삭제할 댓글 번호를 입력하세요: ");
                     int cmtNum = Integer.parseInt(br.readLine());
 
-                    // 댓글 삭제 메서드 호출
-                    boardCommentDAO.deleteComment(cmtNum);
+                    boardCommentDAO.deleteBoardComment(cmtNum);
 
-                } else if (no == 4) {
+                } else if (num == 3) {
+                    // 댓글 목록 조회
+                    System.out.println("------------------------------------------");
+                    System.out.print("조회할 게시글 번호를 입력하세요: ");
+                    int bdNum = Integer.parseInt(br.readLine());
+
+                    boardCommentDAO.selectCommentsByBoard(bdNum);
+
+                } else if (num == 4) {
+                    // 종료
                     System.out.println("프로그램을 종료합니다.");
                     break;
-
                 } else {
-                    System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                    System.out.println("잘못 입력했습니다.");
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                System.out.println("숫자만 입력 가능합니다.");
             }
         }
     }
 
     public static void main(String[] args) {
-        String loggedInMemId = "user1";  // 예시로 user1을 로그인된 사용자로 설정
-        new BoardCommentMain(loggedInMemId);  // 로그인된 사용자 아이디를 전달
+        new BoardCommentMain();
     }
 }
