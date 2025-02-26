@@ -3,6 +3,7 @@ package kr.ulesson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.KeyStore.PasswordProtection;
 import java.util.ArrayList;
 
 public class MemberMain {
@@ -67,7 +68,7 @@ public class MemberMain {
 
 		// 로그인 후 추가 기능 메뉴
 		while (isLoggedIn) {
-			System.out.print("\n 1. 마이페이지 | 2. 강의 둘러보기 | 3. 공지사항 | 4. 종료 >> ");
+			System.out.print("\n 1. 마이페이지 | 2. 강의 둘러보기 | 3. 공지사항 | 4 커뮤니티 | 5. 종료 >> ");
 			try {
 				int choice = Integer.parseInt(br.readLine());
 
@@ -109,6 +110,7 @@ public class MemberMain {
 
 							MyLessonDAO myLessonDAO = new MyLessonDAO();
 							myLessonDAO.addLesson(mem_id, lesNum);
+							myLessonDAO.addPurchasedLesson(mem_id, lesNum);
 							System.out.println("구매가 완료되었습니다! 내 학습에서 확인하세요.");
 						} 
 
@@ -119,9 +121,12 @@ public class MemberMain {
 				} else if (choice == 3) {
 					noticeMain = new NoticeMain(null, false);
 				} else if (choice == 4) {
+					new BoardMain_User(mem_id);
+				} else if (choice == 5) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
-				} else {
+				}
+				else {
 					System.out.println("잘못 입력했습니다. 다시 선택하세요.");
 				}
 			} catch (NumberFormatException e) {
@@ -131,7 +136,7 @@ public class MemberMain {
 			}
 			//마이페이지
 			while (isMyPage) {
-				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 리뷰 관리 | 7. 구매내역  | 8. 뒤로가기>> ");
+				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 리뷰 관리 | 7. 구매내역  | 8. 댓글 관리 | 9. 뒤로가기>> ");
 				System.out.println(); //개행
 
 				try {
@@ -161,7 +166,6 @@ public class MemberMain {
 					case 4:
 						myLessonDAO.myLesson(mem_id);
 						break;
-
 					case 5:
 						new CustomerInquireMain_User(null, true, mem_id);
 						break;
@@ -170,12 +174,18 @@ public class MemberMain {
 						break;
 					case 7:
 						try {
-							new PurchasedLessonMain(mem_id, isLoggedIn);
+							new PurchasedLessonMain(mem_id, isLoggedIn).showPurchasedLessons();
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
 						break;
 					case 8:
+						boolean result = new BoardCommentDAO().AllmyComments(mem_id);
+						if (result) {
+							new BoardCommentMain(mem_id).deleteComment(mem_id);
+						}
+						break;
+					case 9:
 						System.out.println("이전 메뉴로 돌아갑니다.");
 						isMyPage = false;
 						break;
@@ -311,6 +321,7 @@ public class MemberMain {
 				} else if (pt_value < 0){
 					System.out.println("[오류] 0 미만의 금액은 충전할 수 없습니다.");
 				} else if (pt_value > 0){
+					pot.addPoint(mem_id, pt_value);
 					System.out.println(pt_value +"점" + "충전 완료 되었습니다.");
 					break;
 				} 
@@ -318,7 +329,6 @@ public class MemberMain {
 				System.out.println("[숫자만 입력 가능] 올바른 금액을 입력하세요.");
 			}
 		}
-
 	} //addPoint
 
 	public static void main(String[] args) {

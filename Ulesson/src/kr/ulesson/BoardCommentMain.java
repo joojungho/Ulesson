@@ -12,25 +12,16 @@ public class BoardCommentMain {
    
    private String id = "admin";
 
-   public BoardCommentMain() {
+   public BoardCommentMain(String id) {
       try {
+    	 this.id = id;
          br = new BufferedReader(new InputStreamReader(System.in));
          boardCommentDAO = new BoardCommentDAO();
          boardDAO_User = new BoardDAO_User();
          // 메뉴 호출
-         callMenu();
       } catch (Exception e) {
          e.printStackTrace();
-      } finally {
-         // 자원 정리
-         if (br != null) {
-            try {
-               br.close();
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
-         }
-      }
+      } 
    }
 
    // 메뉴
@@ -218,34 +209,36 @@ public class BoardCommentMain {
          }
       }
    }
-   public void deleteComment(String memId) {
-	    int cmtNum = 0;
-	    while(true) {
-	        try {
-	            System.out.println("------------------------------------------");
-	            System.out.print("삭제할 댓글 번호 : ");
-	            cmtNum = Integer.parseInt(br.readLine());	            
-	           
-	            if (!boardCommentDAO.isCmtNumberExist(cmtNum)) {
-	                System.out.println("존재하지 않는 댓글 번호입니다. 다시 입력해주세요.");                  
-	            } else {
-	                
-	                if (!boardCommentDAO.isCmtWriter(cmtNum, memId)) {
-	                    System.out.println("본인이 작성한 댓글만 삭제할 수 있습니다.");
-	                } else {
-	                   
-	                    boardCommentDAO.deleteBoardComment(cmtNum);  // 댓글 삭제	                    
-	                    break;  
-	                }
-	            }
-	        } catch (Exception e) {
-	            System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-	        }
-	    }
-	}
+ 
+   public void deleteComment(String memId) throws IOException {
+       int cmtNum = 0;
+    
+       while(true) {
+           try {
+               System.out.println("------------------------------------------");
+               System.out.print("삭제할 댓글 번호 : ");
+               cmtNum = Integer.parseInt(br.readLine());               
+              
+               if (!boardCommentDAO.isCmtNumberExist(cmtNum)) {
+                   System.out.println("존재하지 않는 댓글 번호입니다. 다시 입력해주세요.");                  
+               } else {
+                   
+                   if (!boardCommentDAO.isCmtWriter(cmtNum, memId)) {
+                       System.out.println("본인이 작성한 댓글만 삭제할 수 있습니다.");
+                   } else {
+                      
+                       boardCommentDAO.deleteBoardComment(cmtNum);  // 댓글 삭제                       
+                       break;  
+                   }
+               }
+           } catch (Exception e) {
+               System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+           }
+       }
 
-
-   public static void main(String[] args) {
-      new BoardCommentMain();
    }
+
+//   public static void main(String[] args) {
+//      new BoardCommentMain();
+//   }
 }

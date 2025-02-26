@@ -30,7 +30,7 @@ public class AdminMain {
 		}
 	}
 
-	private void adminMenu() throws IOException {
+	private void adminMenu() throws IOException, ClassNotFoundException {
 		System.out.println("=== 관리자 로그인 ===");
 		System.out.print("관리자 ID >> ");
 		String adminId = br.readLine();
@@ -53,7 +53,8 @@ public class AdminMain {
 			System.out.println("4. 강의 관리");
 			System.out.println("5. 공지사항 관리");
 			System.out.println("6. 문의사항 관리");			
-			System.out.println("7. 로그아웃");
+			System.out.println("7. 환불사항 관리");			
+			System.out.println("8. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -80,6 +81,9 @@ public class AdminMain {
 					new CustomerInquireMain_Admin(null, true);
 					break;
 				case 7:
+					new PurchasedLessonMain(adminId, isAdminLoggedIn).refundAdmin();;
+					break;
+				case 8:
 					logout();
 					break;
 				default:
@@ -90,6 +94,8 @@ public class AdminMain {
 			}
 		}
 	}
+	
+	
 
 	// 회원 목록 출력
 	private void listAllMembers() {
