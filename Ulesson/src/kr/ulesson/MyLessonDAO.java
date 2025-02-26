@@ -41,6 +41,26 @@ import kr.util.DBUtil;
 	        }
 	    }
 	    
+	    // 강의 구매함과 동시에 구매내역에 추가하는 메서드
+	    public void addPurchasedLesson(String memId, int lesNum) {
+	    	Connection conn = null;
+	    	PreparedStatement pstmt = null;
+	    	String sql = "INSERT INTO purchased_lesson (pch_num, les_num, mem_id) VALUES (pch_les_seq.NEXTVAL, ?, ?)";
+	    	
+	    	try {
+				conn = DBUtil.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, lesNum);
+				pstmt.setString(2, memId);
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.executeClose(null, pstmt, conn);
+			}
+	    }
+	    
 	    //내 학습 진행도
 	    public void myLesson(String memId) {
 			Connection conn = null;

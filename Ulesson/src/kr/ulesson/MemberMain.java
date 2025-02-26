@@ -109,6 +109,7 @@ public class MemberMain {
 
 							MyLessonDAO myLessonDAO = new MyLessonDAO();
 							myLessonDAO.addLesson(mem_id, lesNum);
+							myLessonDAO.addPurchasedLesson(mem_id, lesNum);
 							System.out.println("구매가 완료되었습니다! 내 학습에서 확인하세요.");
 						} 
 
@@ -311,6 +312,7 @@ public class MemberMain {
 				} else if (pt_value < 0){
 					System.out.println("[오류] 0 미만의 금액은 충전할 수 없습니다.");
 				} else if (pt_value > 0){
+					pot.addPoint(mem_id, pt_value);
 					System.out.println(pt_value +"점" + "충전 완료 되었습니다.");
 					break;
 				} 
@@ -318,7 +320,6 @@ public class MemberMain {
 				System.out.println("[숫자만 입력 가능] 올바른 금액을 입력하세요.");
 			}
 		}
-
 	} //addPoint
 
 	public static void main(String[] args) {

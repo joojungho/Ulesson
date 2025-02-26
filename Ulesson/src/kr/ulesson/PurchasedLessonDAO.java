@@ -26,7 +26,6 @@ public class PurchasedLessonDAO {
 
 			// MEM_ID 파라미터 설정
 			pstmt.setString(1, memId);
-			
 			ResultSet rs = pstmt.executeQuery();
 			// 결과 처리
 			while (rs.next()) {
