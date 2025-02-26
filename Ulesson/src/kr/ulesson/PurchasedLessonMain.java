@@ -113,6 +113,7 @@ public class PurchasedLessonMain {
 						int pchStatusToUpdate = Integer.parseInt(br.readLine());;
 						dao.updatePchStatus(purchasedLessons.get(pchStatusToUpdate - 1).getMemId(), 
 								purchasedLessons.get(pchStatusToUpdate - 1).getLesNum());
+						System.out.println("환불이 완료되었습니다.");
 						break;
 					} else if (subOption == 2){
 						break;

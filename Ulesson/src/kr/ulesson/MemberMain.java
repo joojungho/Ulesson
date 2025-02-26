@@ -3,6 +3,7 @@ package kr.ulesson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.KeyStore.PasswordProtection;
 import java.util.ArrayList;
 
 public class MemberMain {
@@ -179,7 +180,10 @@ public class MemberMain {
 						}
 						break;
 					case 8:
-						
+						boolean result = new BoardCommentDAO().AllmyComments(mem_id);
+						if (result) {
+							new BoardCommentMain(mem_id).deleteComment(mem_id);
+						}
 						break;
 					case 9:
 						System.out.println("이전 메뉴로 돌아갑니다.");

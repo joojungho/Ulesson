@@ -195,7 +195,7 @@ public class ReviewDAO {
 			//JDBC 수행 1,2단계
 			conn = DBUtil.getConnection();
 			//SQL문 작성
-			sql = "UPDATE lesson SET les_score=(SELECT AVG(rv_score) FROM review WHERE les_num=?) WHERE les_num=?";
+			sql = "UPDATE lesson SET les_score=(SELECT NVL(AVG(rv_score),0) FROM review WHERE les_num=?) WHERE les_num=?";
 			//JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
 			//?에 데이터 바인딩

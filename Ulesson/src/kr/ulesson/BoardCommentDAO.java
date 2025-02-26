@@ -94,11 +94,11 @@ public class BoardCommentDAO {
    }
 
    // 내 댓글 조회
-   public void AllmyComments(String memId) {
+   public boolean AllmyComments(String memId) {
       Connection conn = null;
       PreparedStatement pstmt = null;
       ResultSet rs = null;
-      String sql = "SELECT cmt_num, mem_id, cmt_content FROM board_comment WHERE bd_num = ? ORDER BY cmt_num";
+      String sql = "SELECT cmt_num, mem_id, cmt_content FROM board_comment WHERE mem_id = ? ORDER BY cmt_num";
 
       try {
          conn = DBUtil.getConnection();
@@ -106,7 +106,8 @@ public class BoardCommentDAO {
          pstmt.setString(1, memId);
          rs = pstmt.executeQuery();
          if (!rs.next()) {
-            System.out.println("작성한 댓글이 없습니다.");      
+            System.out.println("작성한 댓글이 없습니다.");    
+            return false;
          } else {
             System.out.println("------------------------------------------");
             System.out.println("내 댓글 목록");
@@ -120,12 +121,14 @@ public class BoardCommentDAO {
                System.out.println("댓글 내용 : " + cmtContent);
 
             } while (rs.next());
+            return true;
          }
       } catch (Exception e) {
          e.printStackTrace();
       } finally {
          DBUtil.executeClose(rs, pstmt, conn);
       }
+      return false;
    }
 
    // 댓글 작성자 확인

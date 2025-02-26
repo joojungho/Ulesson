@@ -36,7 +36,21 @@ public class PurchasedLessonDAO {
 				int pchStatus = rs.getInt("pch_status");
 				String lesName = rs.getString("les_name");  // les_name 가져오기       
 
-				String pchStatusStr = (pchStatus == 0) ? "보유 중" : "환불 접수";
+				String pchStatusStr = null;
+				
+				switch (pchStatus) {
+				case 0:
+					pchStatusStr = "보유 중";
+					break;
+				case 1:
+					pchStatusStr = "환불 접수";
+					break;
+				case 2:
+					pchStatusStr = "환불 완료";
+					break;
+				default:
+					break;
+				}
 
 				// PurchasedLesson 객체에 결과를 저장
 				PurchasedLesson purchasedLesson = new PurchasedLesson(pchNum, lesNum, lesName, memIdResult, pchDate, pchStatusStr);
@@ -72,8 +86,22 @@ public class PurchasedLessonDAO {
 					int pchStatus = rs.getInt("pch_status");
 					String lesName = rs.getString("les_name");  // les_name 가져오기       
 
-					String pchStatusStr = (pchStatus == 0) ? "보유 중" : "환불 접수";
-
+					String pchStatusStr = null;
+					
+					switch (pchStatus) {
+					case 0:
+						pchStatusStr = "보유 중";
+						break;
+					case 1:
+						pchStatusStr = "환불 접수";
+						break;
+					case 2:
+						pchStatusStr = "환불 완료";
+						break;
+					default:
+						break;
+					}
+					
 					// PurchasedLesson 객체에 결과를 저장
 					PurchasedLesson purchasedLesson = new PurchasedLesson(pchNum, lesNum, lesName, memIdResult, pchDate, pchStatusStr);
 					purchasedLessons.add(purchasedLesson);
@@ -102,6 +130,7 @@ public class PurchasedLessonDAO {
 			int result = pstmt.executeUpdate();
 			
 			if(result > 0) System.out.println("환불이 신청되었습니다.");
+			else System.out.println("이미 환불이 되었거나 환불할 수 없는 강의입니다.");
 			
 		} catch (Exception e) {
 			System.out.println("[환불 신청 중 오류 발생]");
@@ -115,10 +144,10 @@ public class PurchasedLessonDAO {
 		int price = -1;
 		String sql = null;
 		try (Connection conn = DBUtil.getConnection();){
-			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = null;
 			
 			sql = "SELECT les_price FROM lesson WHERE les_num=?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, lesNum);
 			rs = pstmt.executeQuery();
@@ -135,6 +164,7 @@ public class PurchasedLessonDAO {
 			int rowsAffected = pstmt.executeUpdate();	
 			
 			new PointDAO().addPoint(id, price);
+			
 			
 			new MyLessonDAO().deleteMyLesson(id, lesNum);
 			

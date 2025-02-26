@@ -71,7 +71,7 @@ import kr.util.DBUtil;
 	            conn.setAutoCommit(false); // 트랜잭션 시작
 
 	            // 1️⃣ '내 학습'에 추가 (mylesson 테이블)
-	            String sql = "DELETE FROM mylesson WHERE les_num=? AND mem_id=?;";
+	            String sql = "DELETE FROM mylesson WHERE les_num=? AND mem_id=?";
 	            pstmt = conn.prepareStatement(sql);
 	            pstmt.setInt(1, lesNum);
 	            pstmt.setString(2, memId);

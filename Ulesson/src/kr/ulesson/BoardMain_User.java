@@ -19,14 +19,7 @@ public class BoardMain_User {
 			callMenu();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// 자원 정리
-			if (br != null)
-				try {
-					br.close();
-				} catch (IOException e) {
-				}
-		}
+		} 	
 	}
 
 	// 메뉴
@@ -282,12 +275,12 @@ public class BoardMain_User {
 						}
 					} boardDAO.deleteBoard(bdNum);         
 
-				} else if (no == 6) {
-					// 종료
+				} else if (no == 5) {
 					System.out.println("------------------------------------------");
-					System.out.println("프로그램을 종료합니다.");
+					System.out.println("커뮤니티 게시판을 종료합니다.");
 					break;
-				} else {
+				} 
+				else {
 					System.out.println("------------------------------------------");
 					System.out.println("잘못 입력했습니다. 다시 입력해주세요.");
 				}

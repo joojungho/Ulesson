@@ -81,7 +81,7 @@ public class AdminMain {
 					new CustomerInquireMain_Admin(null, true);
 					break;
 				case 7:
-					new PurchasedLessonMain(adminId, isAdminLoggedIn);
+					new PurchasedLessonMain(adminId, isAdminLoggedIn).refundAdmin();;
 					break;
 				case 8:
 					logout();
@@ -94,6 +94,8 @@ public class AdminMain {
 			}
 		}
 	}
+	
+	
 
 	// 회원 목록 출력
 	private void listAllMembers() {
