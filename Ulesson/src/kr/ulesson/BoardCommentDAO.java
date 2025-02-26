@@ -98,7 +98,7 @@ public class BoardCommentDAO {
       Connection conn = null;
       PreparedStatement pstmt = null;
       ResultSet rs = null;
-      String sql = "SELECT cmt_num, mem_id, cmt_content FROM board_comment WHERE bd_num = ? ORDER BY cmt_num";
+      String sql = "SELECT cmt_num, mem_id, cmt_content FROM board_comment WHERE mem_id = ? ORDER BY cmt_num";
 
       try {
          conn = DBUtil.getConnection();
@@ -202,8 +202,31 @@ public class BoardCommentDAO {
       }      
       return false;   
    }
+   
+   // 내 댓글 수정
+   public void updateBoardCmt(int cmtNum, String newCmtContent) {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    String sql = null;
 
-
+	    try {
+	        conn = DBUtil.getConnection();
+	        sql = "UPDATE board_comment SET cmt_content = ?, cmt_mdate = SYSDATE WHERE cmt_num = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, newCmtContent);	        	   
+	        pstmt.setInt(2, cmtNum);
+	       	       
+	        int count = pstmt.executeUpdate();
+	        if (count > 0) {	            
+	        } else {
+	            System.out.println("수정할 댓글이 존재하지 않습니다.");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.executeClose(null, pstmt, conn);
+	    }
+	}
 
 
 }//class

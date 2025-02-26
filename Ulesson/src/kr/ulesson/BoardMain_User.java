@@ -273,7 +273,7 @@ public class BoardMain_User {
                   }
                } boardDAO.deleteBoard(bdNum);         
 
-            } else if (no == 6) {
+            } else if (no == 5) {
                // 종료
                System.out.println("------------------------------------------");
                System.out.println("프로그램을 종료합니다.");
