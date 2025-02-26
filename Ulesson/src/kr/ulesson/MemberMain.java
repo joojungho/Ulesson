@@ -47,7 +47,10 @@ public class MemberMain {
 				int choice = Integer.parseInt(br.readLine());
 				if (choice == 1) {
 					login();
-					if(isLoggedIn) break;
+					if(isLoggedIn) {
+						lessonService.setId(mem_id);
+						break;
+					}
 				} else if (choice == 2) {
 					register();
 				} else if (choice == 3) {
@@ -71,30 +74,42 @@ public class MemberMain {
 				if (choice == 1) {
 					isMyPage = true;
 				} else if (choice == 2) {
-					// 강의 카테고리 선택
-					Item result = categoryService.viewCategory(null);
-					ArrayList<Item> list = lessonService.viewLesson(result.getName());
+					ArrayList<Item> list = null;
+					System.out.print("\n 1. 카테고리로 검색 2. 전체 검색 >>");
+					choice = Integer.parseInt(br.readLine());
+
+					if (choice == 2) {
+						list = lessonService.searchLesson();
+
+					} else {
+						// 강의 카테고리 선택
+						Item result = categoryService.viewCategory(null);
+						list = lessonService.viewLesson(result.getName());
+					}
+					
+					if(list.isEmpty()) continue;
 
 					// 강의 선택
-					System.out.print("강의를 선택하세요: ");
+					System.out.print("강의를 선택하세요(뒤로가기 0): ");
 					int num = Integer.parseInt(br.readLine());
+					if(num == 0) continue;
 					int lesNum = list.get(num - 1).getNumber();
 
 					// 강의 상세 정보 출력
 					lessonService.viewLessonDetail(lesNum);
 
-					
+
 					System.out.print("이 강의를 구매하시겠습니까? (Y/N): ");
 					String buyChoice = br.readLine().trim().toUpperCase();
 					if (buyChoice.equals("Y")) {
-						
+
 						PointDAO pointDAO = new PointDAO();
 						if(pointDAO.minusPointsForLesson(mem_id, lesNum)) {
 
-						
-						MyLessonDAO myLessonDAO = new MyLessonDAO();
-						myLessonDAO.addLesson(mem_id, lesNum);
-						System.out.println("구매가 완료되었습니다! 내 학습에서 확인하세요.");
+
+							MyLessonDAO myLessonDAO = new MyLessonDAO();
+							myLessonDAO.addLesson(mem_id, lesNum);
+							System.out.println("구매가 완료되었습니다! 내 학습에서 확인하세요.");
 						} 
 
 					} else {
@@ -111,10 +126,12 @@ public class MemberMain {
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("[숫자만 입력 가능]");
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("[잘못된 항목 선택]");
 			}
 			//마이페이지
 			while (isMyPage) {
-				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5.뒤로가기 >> ");
+				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 리뷰 관리 | 7. 구매내역  | 8. 뒤로가기>> ");
 				System.out.println(); //개행
 
 				try {
@@ -146,6 +163,19 @@ public class MemberMain {
 						break;
 
 					case 5:
+						new CustomerInquireMain_User(null, true, mem_id);
+						break;
+					case 6:
+						new ReviewService(br).deleteMyReview(mem_id);
+						break;
+					case 7:
+						try {
+							new PurchasedLessonMain(mem_id, isLoggedIn);
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+						break;
+					case 8:
 						System.out.println("이전 메뉴로 돌아갑니다.");
 						isMyPage = false;
 						break;
@@ -158,7 +188,7 @@ public class MemberMain {
 				} catch (NumberFormatException e) {
 					System.out.println("[숫자만 입력 가능]");
 				}
-				
+
 				//마이포인트
 				while (isPointInfo) {
 					System.out.print("\n 1.포인트 조회 | 2.포인트 충전 | 3.뒤로가기 >>");
@@ -264,37 +294,37 @@ public class MemberMain {
 		} //if-else
 
 	} //updateMemberInfo
-	
+
 
 	private void addPoint() throws IOException {
 		System.out.println(); //개행
 
-	    int pt_value = 0;
+		int pt_value = 0;
 
-	    while (true) {
-	        try {
-	            System.out.print("포인트 숫자 입력: (충전 취소는 0 입력) >> ");
-	            pt_value = Integer.parseInt(br.readLine());
+		while (true) {
+			try {
+				System.out.print("포인트 숫자 입력: (충전 취소는 0 입력) >> ");
+				pt_value = Integer.parseInt(br.readLine());
 
-	            if (pt_value == 0) {
-	            	break;
-	            } else if (pt_value < 0){
-	            	System.out.println("[오류] 0 미만의 금액은 충전할 수 없습니다.");
-	            } else if (pt_value > 0){
+				if (pt_value == 0) {
+					break;
+				} else if (pt_value < 0){
+					System.out.println("[오류] 0 미만의 금액은 충전할 수 없습니다.");
+				} else if (pt_value > 0){
 					System.out.println(pt_value +"점" + "충전 완료 되었습니다.");
 					break;
 				} 
-	        } catch (NumberFormatException e) {
-	            System.out.println("[숫자만 입력 가능] 올바른 금액을 입력하세요.");
-	        }
-	    }
+			} catch (NumberFormatException e) {
+				System.out.println("[숫자만 입력 가능] 올바른 금액을 입력하세요.");
+			}
+		}
 
 	} //addPoint
-
 
 	public static void main(String[] args) {
 		new MemberMain();
 	} //main
+
 
 
 } //class

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class LessonService {
 	
+	private String id;
 	private LessonDAO dao = new LessonDAO();
 	private BufferedReader br;
 	private CategoryService categoryService;
@@ -15,6 +16,10 @@ public class LessonService {
 		this.br = br;
 		this.categoryService = new CategoryService(br);
 		this.reviewService = new ReviewService(br);
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public void addLesson() throws IOException {
@@ -67,16 +72,24 @@ public class LessonService {
 	
 	public void viewLessonDetail(int lesNum) throws NumberFormatException, IOException {
 		dao.selectLessonDetail(lesNum);
-		System.out.print("1.리뷰 열람 2.강의 구매");
+		System.out.print("1.리뷰 열람 2.강의 구매 3.뒤로가기");
 		int num = Integer.parseInt(br.readLine());
 		switch (num) {
 			case 1:
 				reviewService.viewReviewLec(lesNum);
+				reviewService.insertReview(lesNum, id);
 				break;
 			case 2:
 				break;
+			case 3:
+				return;
 			default:
 				break;
 		}
+	}
+	
+	public ArrayList<Item> searchLesson() throws IOException{
+		System.out.print("\n 검색할 내용을 입력하세요: ");
+		return dao.selectLessonSearch(br.readLine());
 	}
 }

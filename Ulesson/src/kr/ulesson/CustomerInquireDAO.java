@@ -36,6 +36,7 @@ public class CustomerInquireDAO {
 
 		return inquiries;
 	}
+	
 
 	// 내 문의내역 보기
 	public List<CustomerInquire> getMyInquires(String memId){
@@ -175,5 +176,10 @@ public class CustomerInquireDAO {
 		}
 		return false;
 	}
+	
+	
+	
+	
+	
 
 }
