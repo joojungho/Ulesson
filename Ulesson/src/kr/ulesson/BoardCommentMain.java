@@ -12,8 +12,9 @@ public class BoardCommentMain {
    
    private String id = "admin";
 
-   public BoardCommentMain() {
+   public BoardCommentMain(String id) {
       try {
+    	 this.id = id;
          br = new BufferedReader(new InputStreamReader(System.in));
          boardCommentDAO = new BoardCommentDAO();
          boardDAO_User = new BoardDAO_User();
@@ -203,7 +204,7 @@ public class BoardCommentMain {
       }
    }
 
-   public static void main(String[] args) {
-      new BoardCommentMain();
-   }
+//   public static void main(String[] args) {
+//      new BoardCommentMain();
+//   }
 }
