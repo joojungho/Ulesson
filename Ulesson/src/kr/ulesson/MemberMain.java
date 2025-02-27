@@ -182,6 +182,7 @@ public class MemberMain {
 							sectionDAO.selectSection(select);
 						}
 						break;
+
 					case 4:
 						new CustomerInquireMain_User(null, true, mem_id);
 						break;
