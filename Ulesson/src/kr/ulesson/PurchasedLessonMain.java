@@ -35,34 +35,35 @@ public class PurchasedLessonMain {
 					List<PurchasedLesson> purchasedLessons = dao.getAllPurchasedLessons(mem_id);
 					if (purchasedLessons.isEmpty()) {
 						System.out.println("구매된 강의가 없습니다.");
+						break;
 					} else {
 						System.out.println("구매된 강의 목록:");
 						for (PurchasedLesson lesson : purchasedLessons) {
 							System.out.println(lesson);
 						}
-					}
-					
-					System.out.println("1. 환불신청");
-					System.out.println("2. 뒤로가기");
-					System.out.println("3. 종료");
-					System.out.print("옵션을 선택하세요: ");
-					int subOption = scanner.nextInt();
-					scanner.nextLine();
-           
-					if (subOption == 1) {
-						System.out.print("환불할 강의 번호를 입력하세요: ");
-						int pchStatusToUpdate = scanner.nextInt();
+						System.out.println("1. 환불신청");
+						System.out.println("2. 뒤로가기");
+						System.out.println("3. 종료");
+						System.out.print("옵션을 선택하세요: ");
+						int subOption = scanner.nextInt();
 						scanner.nextLine();
 						
-						dao.requestRefund(mem_id,pchStatusToUpdate);
-						break;
-					} else if (subOption == 2){
-						break;
-					} else if (subOption == 3) {
-						System.exit(0);
-					} else {
-						System.out.println("잘못된 입력입니다. 다시 입력하세요");
+						if (subOption == 1) {
+							System.out.print("환불할 강의 번호를 입력하세요: ");
+							int pchStatusToUpdate = scanner.nextInt();
+							scanner.nextLine();
+							
+							dao.requestRefund(mem_id,pchStatusToUpdate);
+							break;
+						} else if (subOption == 2){
+							break;
+						} else if (subOption == 3) {
+							System.exit(0);
+						} else {
+							System.out.println("잘못된 입력입니다. 다시 입력하세요");
+						}
 					}
+					
 					
 				} // while
 				

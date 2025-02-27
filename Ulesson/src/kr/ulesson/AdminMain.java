@@ -54,7 +54,8 @@ public class AdminMain {
 			System.out.println("5. 공지사항 관리");
 			System.out.println("6. 문의사항 관리");			
 			System.out.println("7. 환불사항 관리");			
-			System.out.println("8. 로그아웃");
+			System.out.println("8. 커뮤니티 관리");			
+			System.out.println("9. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -84,6 +85,9 @@ public class AdminMain {
 					new PurchasedLessonMain(adminId, isAdminLoggedIn).refundAdmin();;
 					break;
 				case 8:
+					new BoardMain_Admin();
+					break;
+				case 9:
 					logout();
 					break;
 				default:

@@ -96,13 +96,13 @@ public class MemberMain {
 
 					if (choice == 2) {
 						list = lessonService.searchLesson();
-						
+
 					} else {
 						// 강의 카테고리 선택
 						Item result = categoryService.viewCategory(null);
 						list = lessonService.viewLesson(result.getName());
 					}
-					
+
 					if(list.isEmpty()) continue;
 
 					// 강의 선택
@@ -175,10 +175,12 @@ public class MemberMain {
 						break;
 
 					case 3:
-						myLessonDAO.myLesson(mem_id);
-						System.out.print("수강할 강의 번호를 선택하세요.");
-						int select = Integer.parseInt(br.readLine());
-						sectionDAO.selectSection(select);
+						boolean hasLesson = myLessonDAO.myLesson(mem_id);
+						if(hasLesson) {
+							System.out.print("수강할 강의 번호를 선택하세요.");
+							int select = Integer.parseInt(br.readLine());
+							sectionDAO.selectSection(select);
+						}
 						break;
 					case 4:
 						new CustomerInquireMain_User(null, true, mem_id);

@@ -91,8 +91,8 @@ public class CustomerInquire {
 
     @Override
     public String toString() {
-        return "[문의번호=" + iqNum + ", 문의항목=" + iqCate + ", 문의내용=" + iqContent + ", 사용자Id=" + memId + 
-               ", 문의작성일=" + iqDate + ", 문의수정일=" + iqMdate + ", "
-               		+ "답변내용=" + (rsContent==null ? "없음" : rsContent) + ", 답변작성일=" + (rsDate==null ? " " : rsDate) + "]";
+        return "[문의번호 : " + iqNum + " / 사용자 : " + memId + " / 문의항목 : " + iqCate + "\n 문의내용 : " + iqContent + 
+               " \n 문의작성일 : " + iqDate + " / 문의수정일 : " + iqMdate + "\n "
+               		+ "답변내용 : " + (rsContent==null ? "없음" : rsContent) + "/ 답변작성일 : " + (rsDate==null ? " " : rsDate) + "]";
     }
 }

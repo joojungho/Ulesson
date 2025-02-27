@@ -220,8 +220,7 @@ public class CustomerInquireMain_User {
 				}
 			}
 			else if (option == 6) {  // 뒤로가기				
-				mainMenu.showMemberMenu();
-				break;
+				return;
 			} else if(option == 7) { // 종료
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
