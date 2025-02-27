@@ -134,8 +134,7 @@ public class CustomerInquireMain_Admin {
 					}
 				}
 			} else if (option == 4) {  // 뒤로가기				
-				mainMenu.showMemberMenu();
-                break;
+				return;
 			} else if(option == 5) { // 종료
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
