@@ -175,10 +175,12 @@ public class MemberMain {
 						break;
 
 					case 3:
-						myLessonDAO.myLesson(mem_id);
-						System.out.print("수강할 강의 번호를 선택하세요.");
-						int select = Integer.parseInt(br.readLine());
-						sectionDAO.selectSection(select);
+						boolean hasLesson = myLessonDAO.myLesson(mem_id);
+						if(hasLesson) {
+							System.out.print("수강할 강의 번호를 선택하세요.");
+							int select = Integer.parseInt(br.readLine());
+							sectionDAO.selectSection(select);
+						}
 						break;
 
 					case 4:

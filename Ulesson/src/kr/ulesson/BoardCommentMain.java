@@ -170,8 +170,10 @@ public class BoardCommentMain {
        while(true) {
            try {
                System.out.println("------------------------------------------");
-               System.out.print("삭제할 댓글 번호 : ");
-               cmtNum = Integer.parseInt(br.readLine());               
+               System.out.print("삭제할 댓글 번호(돌아가기 0) : ");
+               cmtNum = Integer.parseInt(br.readLine());    
+               
+               if (cmtNum == 0) return;
               
                if (!boardCommentDAO.isCmtNumberExist(cmtNum)) {
                    System.out.println("존재하지 않는 댓글 번호입니다. 다시 입력해주세요.");                  

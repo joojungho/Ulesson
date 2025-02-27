@@ -93,7 +93,7 @@ import kr.util.DBUtil;
 	    }
 	    
 	    //내 학습 진행도
-	    public void myLesson(String memId) {
+	    public boolean myLesson(String memId) {
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -118,14 +118,17 @@ import kr.util.DBUtil;
 							"강의명\t" + lesname );
 					System.out.println("-".repeat(50));
 					}while(rs.next());
+					return true;
 				} else {
 					System.out.println("구매한 강의가 없습니다.");
+					return false;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				DBUtil.executeClose(rs, pstmt, conn);
 			}
+			return false;
 		}
 	
 	

@@ -23,12 +23,7 @@ public class BoardMain_Admin {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// 자원 정리
-			if (br != null)
-				try {
-					br.close();
-				} catch (IOException e) {
-				}
+			
 		}
 	}
 
