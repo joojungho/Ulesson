@@ -83,7 +83,7 @@ public class CustomerInquire {
 
     public Date getRsDate() {
         return rsDate;
-    }
+    } 
 
     public void setRsDate(Date rsDate) {
         this.rsDate = rsDate;
