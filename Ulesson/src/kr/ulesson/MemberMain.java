@@ -19,6 +19,7 @@ public class MemberMain {
 	private LessonService lessonService;
 	private NoticeMain noticeMain;
 	private MyLessonDAO myLessonDAO = new MyLessonDAO();
+	private sectionDAO sectionDAO = new sectionDAO();
 
 	public MemberMain() {
 		try {
@@ -95,7 +96,7 @@ public class MemberMain {
 
 					if (choice == 2) {
 						list = lessonService.searchLesson();
-
+						
 					} else {
 						// 강의 카테고리 선택
 						Item result = categoryService.viewCategory(null);
@@ -150,7 +151,7 @@ public class MemberMain {
 			}
 			//마이페이지
 			while (isMyPage) {
-				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.장바구니 | 4.내 학습 | 5. 문의사항 | 6. 리뷰 관리 | 7. 구매내역  | 8. 댓글 관리 | 9. 뒤로가기>> ");
+				System.out.print("\n 1.회원 정보 | 2. 포인트 관련 | 3.내 학습 | 4. 문의사항 | 5. 리뷰 관리 | 6. 구매내역  | 7. 댓글 관리 | 8. 뒤로가기>> ");
 				System.out.println(); //개행
 
 				try {
@@ -174,31 +175,31 @@ public class MemberMain {
 						break;
 
 					case 3:
-						dao.wishlist(mem_id); // 장바구니
+						myLessonDAO.myLesson(mem_id);
+						System.out.print("수강할 강의 번호를 선택하세요.");
+						int select = Integer.parseInt(br.readLine());
+						sectionDAO.selectSection(select);
 						break;
 					case 4:
-						myLessonDAO.myLesson(mem_id);
-						break;
-					case 5:
 						new CustomerInquireMain_User(null, true, mem_id);
 						break;
-					case 6:
+					case 5:
 						new ReviewService(br).deleteMyReview(mem_id);
 						break;
-					case 7:
+					case 6:
 						try {
 							new PurchasedLessonMain(mem_id, isLoggedIn).showPurchasedLessons();
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
 						break;
-					case 8:
+					case 7:
 						boolean result = new BoardCommentDAO().AllmyComments(mem_id);
 						if (result) {
 							new BoardCommentMain(mem_id).deleteComment(mem_id);
 						}
 						break;
-					case 9:
+					case 8:
 						System.out.println("이전 메뉴로 돌아갑니다.");
 						isMyPage = false;
 						break;

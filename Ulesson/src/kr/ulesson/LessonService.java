@@ -72,7 +72,9 @@ public class LessonService {
 	
 	public void viewLessonDetail(int lesNum) throws NumberFormatException, IOException {
 		dao.selectLessonDetail(lesNum);
+
 		System.out.print("1.리뷰 열람 2.강의 구매 3.뒤로가기 >> ");
+
 		int num = Integer.parseInt(br.readLine());
 		switch (num) {
 			case 1:
