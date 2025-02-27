@@ -82,13 +82,13 @@ public class MemberMain {
 
 					if (choice == 2) {
 						list = lessonService.searchLesson();
-						
+
 					} else {
 						// 강의 카테고리 선택
 						Item result = categoryService.viewCategory(null);
 						list = lessonService.viewLesson(result.getName());
 					}
-					
+
 					if(list.isEmpty()) continue;
 
 					// 강의 선택
@@ -166,6 +166,7 @@ public class MemberMain {
 						int select = Integer.parseInt(br.readLine());
 						sectionDAO.selectSection(select);
 						break;
+
 					case 4:
 						new CustomerInquireMain_User(null, true, mem_id);
 						break;
