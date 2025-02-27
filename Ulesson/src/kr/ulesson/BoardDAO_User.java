@@ -393,12 +393,12 @@ public class BoardDAO_User {
       String sql = null;
 
       try {
-         conn = DBUtil.getConnection();
+    	  
          sql = "DELETE FROM board WHERE bd_num = ?";
          pstmt = conn.prepareStatement(sql);
          pstmt.setInt(1, bdNum);
-
          int count = pstmt.executeUpdate();
+         
          if (count>0) {
             System.out.println("게시글 " + bdNum + "번이 삭제되었습니다.");               
          }else {

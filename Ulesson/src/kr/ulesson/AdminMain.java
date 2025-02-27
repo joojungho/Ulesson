@@ -53,8 +53,9 @@ public class AdminMain {
 			System.out.println("4. 강의 관리");
 			System.out.println("5. 공지사항 관리");
 			System.out.println("6. 문의사항 관리");			
-			System.out.println("7. 환불사항 관리");			
-			System.out.println("8. 로그아웃");
+			System.out.println("7. 환불사항 관리");	
+			System.out.println("8. 커뮤니티시발 관리");
+			System.out.println("9. 로그아웃");
 			System.out.print("선택 >> ");
 
 			try {
@@ -85,6 +86,9 @@ public class AdminMain {
 					break;
 				case 8:
 					logout();
+					break;
+				case 9:
+					new BoardMain_Admin();
 					break;
 				default:
 					System.out.println("잘못 입력했습니다. 다시 선택하세요.");
