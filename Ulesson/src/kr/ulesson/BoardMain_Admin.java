@@ -44,7 +44,7 @@ public class BoardMain_Admin {
 
 					int bdNum = 0;
 					int bdctNum = 0;
-					boardService.SelectBoardDetail(bdNum, bdctNum);
+					bdNum = boardService.SelectBoardDetail(bdNum, bdctNum);
 					
 					while (true) {
 						System.out.println("------------------------------------------");
