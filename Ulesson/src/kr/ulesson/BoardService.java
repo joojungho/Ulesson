@@ -86,7 +86,7 @@ public class BoardService {
 
 	
 	//상세글 보기 메서드
-	public void SelectBoardDetail(int bdNum, int bdctNum) {
+	public int SelectBoardDetail(int bdNum, int bdctNum) {
 		while (true) {
 			try {
 				System.out.println("------------------------------------------");
@@ -116,7 +116,7 @@ public class BoardService {
 								if (boardDAO.isBoardExistInCategory(bdctNum, bdNum)) {
 									// 게시글이 선택된 카테고리에 속하면 게시글 출력
 									boardDAO.selectBoardDetail(bdNum);									 
-									break; // 게시글이 유효하면 종료
+									return bdNum;
 								} else {
 									System.out.println("선택한 게시글은 해당 카테고리에 없습니다. 다시 선택해주세요.");
 								}
@@ -125,7 +125,7 @@ public class BoardService {
 								System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
 							}
 						}
-						break; // 카테고리가 유효하고 게시글을 선택한 경우 종료
+						//break; // 카테고리가 유효하고 게시글을 선택한 경우 종료
 					}
 				}   
 			} catch (Exception e) {
