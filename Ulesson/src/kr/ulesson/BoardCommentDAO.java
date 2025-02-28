@@ -17,6 +17,8 @@ public class BoardCommentDAO {
       PreparedStatement pstmt = null;
       String sql = "INSERT INTO board_comment (cmt_num, bd_num, mem_id, cmt_content, cmt_date) "
             + "VALUES (bd_cmt_seq.NEXTVAL, ?, ?, ?, SYSDATE)";
+      
+      
 
       try {
          conn = DBUtil.getConnection();

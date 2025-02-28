@@ -15,6 +15,7 @@ public class BoardDAO_User {
       PreparedStatement pstmt = null;
       String sql = "UPDATE board SET bd_recommend=bd_recommend+1 WHERE bd_num = ? ";
 
+      
       try {
          conn = DBUtil.getConnection();
          pstmt = conn.prepareStatement(sql);

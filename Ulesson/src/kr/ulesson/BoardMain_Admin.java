@@ -202,6 +202,8 @@ public class BoardMain_Admin {
                      System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
                   }
                }
+               
+               
 
                // 게시글 수정 메뉴
                while (true) {
