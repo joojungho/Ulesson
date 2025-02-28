@@ -39,7 +39,7 @@ public class NoticeMain {
 //			System.out.println("5. 종료");
 			
 			for(int i = 0, k = 0; i < option.length; i++) {
-				if (!isAdmin && i < 3 && i > 0) {
+				if (isAdmin && i < 3 && i > 0) {
 					cnt++;
 					continue;
 				} else {
@@ -84,11 +84,20 @@ public class NoticeMain {
 							} else {
 								System.out.println("해당 번호의 공지가 없습니다.");
 							}
-						}			
+						}						
+						System.out.println("1. 뒤로가기");
+						System.out.println("2. 종료");
+						int noticeBack = scanner.nextInt();
+						scanner.nextLine();
+						if(noticeBack == 1) {
+							break;	// 뒤로가기
+						} else if(noticeBack == 2) {
+							System.exit(0);		// 종료
+						}
 					} else if (subOption == 2){
 						break;
 					} else if (subOption == 3) {
-						return;
+						System.exit(0);
 					} else {
 						System.out.println("잘못된 입력입니다. 다시 입력하세요");
 					}
@@ -101,7 +110,7 @@ public class NoticeMain {
 //					String adminId = scanner.nextLine();
 
 					// 관리자 ID 일치하는지 확인
-					if (isAdmin) {
+					if (!isAdmin) {
 						System.out.println("새로운 글을 작성하려면 내용을 입력하세요.");
 
 						System.out.print("공지나 이벤트 내용: ");

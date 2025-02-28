@@ -70,32 +70,33 @@ public class CustomerInquireMain_Admin {
 				}
 			} else if (option == 2) {  // 답변 조회
 				while(true) {
+					dao = new CustomerInquireDAO();		        
+					try {
+						// 로그인한 mem_id를 사용하여 답변을 조회
+						List<String> answers = dao.getAnswersAdmin();
+
+						// 등록된 답변이 없을 경우 처리
+						if (answers.isEmpty()) {
+							System.out.println("등록된 답변이 없습니다.");
+						} else {
+							// 등록된 답변이 있을 경우 모두 출력
+							System.out.println("문의에 등록된 모든 답변:");
+							for (String answer : answers) {
+								System.out.println(answer);
+							}
+						}
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}						
 					// 옵션 선택
-					System.out.println("1. 답변 조회");					
-					System.out.println("2. 뒤로가기");
-					System.out.println("3. 종료");
+					// System.out.println("1. 답변 조회");					
+					System.out.println("1. 뒤로가기");
+					System.out.println("2. 종료");
 					System.out.print("옵션을 선택하세요: ");
-					int subOption = scanner.nextInt();
+					int subOption = scanner.nextInt()+1;
 					scanner.nextLine();
 					if(subOption == 1) {
-						dao = new CustomerInquireDAO();		        
-						try {
-							// 로그인한 mem_id를 사용하여 답변을 조회
-							List<String> answers = dao.getAnswers(mem_id);
-
-							// 등록된 답변이 없을 경우 처리
-							if (answers.isEmpty()) {
-								System.out.println("등록된 답변이 없습니다.");
-							} else {
-								// 등록된 답변이 있을 경우 모두 출력
-								System.out.println("문의에 등록된 모든 답변:");
-								for (String answer : answers) {
-									System.out.println(answer);
-								}
-							}
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}						
+						
 					} else if (subOption == 2) {
 						break; // 뒤로가기
 					} else if (subOption == 3) {
