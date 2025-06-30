@@ -196,7 +196,7 @@ public class BoardDAO_User {
 			pstmt.setInt(4,bdCategory);
 
 			int count = pstmt.executeUpdate();
-
+			System.out.println("------------------------------------------");
 			System.out.println(count + "개의 글을 추가했습니다.");
 
 		} catch (Exception e) {

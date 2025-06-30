@@ -9,15 +9,21 @@ public class CustomerInquireMain_User {
 	private boolean isLoggedIn;
 	private String mem_id;
 
-	public CustomerInquireMain_User(UlessonMainYB mainMenu, boolean isLoggedIn) {
+	public CustomerInquireMain_User(UlessonMainYB mainMenu, boolean isLoggedIn, String id) {
 		this.mainMenu = mainMenu;
 		this.isLoggedIn = isLoggedIn;
-		this.mem_id = mainMenu.getMemId();
+		this.mem_id = id;
+		
+		try {
+			showCustomerInquire_User();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
-	public static void main(String[] args) {
-
-	} // main  
 
 	// 고객센터(사용자)               
 	public void showCustomerInquire_User() throws ClassNotFoundException, SQLException {
@@ -25,16 +31,16 @@ public class CustomerInquireMain_User {
 		Scanner scanner = new Scanner(System.in);
 
 		while (true) {
-			System.out.println("1. 모든 문의글 보기");
-			System.out.println("2. 내 문의내역 보기");
-			System.out.println("3. 문의글 작성");
-			System.out.println("4. 문의글 수정");
-			System.out.println("5. 답변 조회");
-			System.out.println("6. 뒤로가기");
-			System.out.println("7. 종료");
+			//System.out.println("1. 모든 문의글 보기");
+			System.out.println("1. 내 문의내역 보기");
+			System.out.println("2. 문의글 작성");
+			System.out.println("3. 문의글 수정");
+			System.out.println("4. 답변 조회");
+			System.out.println("5. 뒤로가기");
+			System.out.println("6. 종료");
 			System.out.print("옵션을 선택하세요: ");
 
-			int option = scanner.nextInt();
+			int option = scanner.nextInt() + 1;
 			scanner.nextLine();  // 버퍼 비우기
 
 			if (option == 1) {  // 모든 문의글 보기
@@ -108,10 +114,10 @@ public class CustomerInquireMain_User {
 						System.out.print("문의글 내용을 입력하세요: ");
 						String iqContent = scanner.nextLine();
 
-						System.out.print("작성자 ID를 입력하세요: ");
-						String memId = scanner.nextLine();
+//						System.out.print("작성자 ID를 입력하세요: ");
+//						String memId = scanner.nextLine();
 
-						CustomerInquire newInquiry = new CustomerInquire(0, iqCate, iqContent, memId, null, null, null, null);
+						CustomerInquire newInquiry = new CustomerInquire(0, iqCate, iqContent, mem_id, null, null, null, null);
 						boolean isAdded = dao.addInquiry(newInquiry);
 						if (isAdded) {
 							System.out.println("새로운 문의글이 작성되었습니다.");

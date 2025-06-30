@@ -71,7 +71,7 @@ public class LessonDAO {
 					System.out.println("개요: " + rs.getString("les_detail"));
 					System.out.println("완강시간: " + rs.getInt("les_time"));
 					System.out.println("카테고리: " + rs.getString("ct_name"));
-					System.out.println("별점: " + rs.getInt("les_score"));
+					System.out.println("별점: " + rs.getDouble("les_score"));
 				} while (rs.next());
 			} else {
 				System.out.println("표시할 데이터가 없습니다.");
@@ -166,6 +166,7 @@ public class LessonDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
+		int cnt = 0;
 		ArrayList<Item> result = new ArrayList<Item>();
 		try {
 			//JDBC 수행 1,2 단계
@@ -184,9 +185,9 @@ public class LessonDAO {
 			if(rs.next()) {
 				System.out.println("제목\t\t강사\t평점\t가격");
 				do {
-					System.out.print(rs.getString("les_name"));
+					System.out.print(++cnt + ". " + rs.getString("les_name"));
 					System.out.print("\t" + rs.getString("les_teacher"));
-					System.out.print("\t" + rs.getInt("les_score"));
+					System.out.print("\t" + rs.getDouble("les_score"));
 					System.out.println("\t" + rs.getInt("les_price") + "원");
 					result.add(new Item(rs.getInt("les_num"),rs.getString("les_name")));
 				} while (rs.next());
@@ -204,17 +205,19 @@ public class LessonDAO {
 	}
 
 	// 해당 단어를 가진 강의 조회
-	public void selectLessonSearch(String keyword) {
+	public ArrayList<Item> selectLessonSearch(String keyword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
+		ArrayList<Item> result = new ArrayList<Item>();
+		int cnt = 0;
 
 		try {
 			//JDBC 수행 1,2 단계
 			conn = DBUtil.getConnection();
 			//SQL문 작성
-			sql = "SELECT les_name,les_teacher,les_score,les_price FROM lesson "
+			sql = "SELECT les_num,les_name,les_teacher,les_score,les_price FROM lesson "
 					+ "WHERE les_name LIKE ? OR les_teacher LIKE ?";
 			//JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
@@ -230,10 +233,11 @@ public class LessonDAO {
 			if(rs.next()) {
 				System.out.println("제목\t\t강사\t평점\t가격");
 				do {
-					System.out.print(rs.getString("les_name"));
+					System.out.print(++cnt + ". " + rs.getString("les_name"));
 					System.out.print("\t" + rs.getString("les_teacher"));
 					System.out.print("\t" + rs.getInt("les_score"));
 					System.out.println("\t" + rs.getInt("les_price") + "원");
+					result.add(new Item(rs.getInt("les_num"),rs.getString("les_name")));
 				} while (rs.next());
 			} else {
 				System.out.println("표시할 데이터가 없습니다.");
@@ -245,6 +249,7 @@ public class LessonDAO {
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
+		return result;
 	}
 
 	// 강의 삭제(관리자)

@@ -56,8 +56,8 @@ public class UlessonMainYB {
 									showmylesson();
 								} else if (no2 == 4) {
 									// 구매내역으로 이동
-									PurchasedLessonMain purchasedLesson = new PurchasedLessonMain(this, isLoggedIn);
-									purchasedLesson.showPurchasedLessons();
+									//PurchasedLessonMain purchasedLesson = new PurchasedLessonMain(this, isLoggedIn);
+									//purchasedLesson.showPurchasedLessons();
 								} else if (no2 == 5) {
 									// 위시리스트로 이동
 									showwishlist();
@@ -73,8 +73,8 @@ public class UlessonMainYB {
 										CustomerInquireMain_Admin customerInquire = new CustomerInquireMain_Admin(this, isLoggedIn);
 										customerInquire.showCustomerInquire_Admin();
 									} else {
-										CustomerInquireMain_User customerInquire = new CustomerInquireMain_User(this, isLoggedIn);
-										customerInquire.showCustomerInquire_User();
+										//CustomerInquireMain_User customerInquire = new CustomerInquireMain_User(this, isLoggedIn);
+										//customerInquire.showCustomerInquire_User();
 									}
 								} else if (no2 == 9) {
 									// 공지게시판으로 이동

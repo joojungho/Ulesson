@@ -8,16 +8,13 @@ public class PurchasedLessonMain {
 	private boolean isLoggedIn;
 	private String mem_id;
 
-	public PurchasedLessonMain(UlessonMainYB mainMenu, boolean isLoggedIn) {
+	public PurchasedLessonMain(String id, boolean isLoggedIn) throws ClassNotFoundException {
 		this.mainMenu = mainMenu;
 		this.isLoggedIn = isLoggedIn;
-		this.mem_id = mainMenu.getMemId();
+		this.mem_id = id;
+		
+		showPurchasedLessons();
 	}
-
-	public static void main(String[] args) {		
-
-	}
-
 
 	public void showPurchasedLessons() throws ClassNotFoundException {
 		PurchasedLessonDAO dao = new PurchasedLessonDAO();
@@ -30,11 +27,11 @@ public class PurchasedLessonMain {
 			System.out.print("옵션을 선택하세요: ");
 			
 			int option = scanner.nextInt();
-			scanner.nextLine();  // 버퍼 비우기
+			scanner.nextLine();
 			
 			if (option == 1) { // 구매내역 조회
 				while(true) {
-					List<PurchasedLesson> purchasedLessons = dao.getAllPurchasedLessons();
+					List<PurchasedLesson> purchasedLessons = dao.getAllPurchasedLessons(mem_id);
 					if (purchasedLessons.isEmpty()) {
 						System.out.println("구매된 강의가 없습니다.");
 					} else {
@@ -76,8 +73,7 @@ public class PurchasedLessonMain {
 				} // while
 				
 			} else if (option == 2){ // 뒤로가기
-				mainMenu.showMemberMenu();
-				break;
+				return;
 			} else if (option == 3) { // 종료
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
