@@ -3,6 +3,7 @@ package kr.ulesson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import kr.util.DBUtil;
@@ -33,9 +34,12 @@ public class LessonDAO {
 			//4단계
 			int result = pstmt.executeUpdate();
 			if(result != 0) flag = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
+		}
+		finally {
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 		return flag;
@@ -78,8 +82,10 @@ public class LessonDAO {
 			}
 
 			System.out.println("----------------------------------");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
@@ -117,8 +123,10 @@ public class LessonDAO {
 				flag = true;
 				System.out.println(num + "번 강의를 수정했습니다.");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
 		} finally {
 			//자원정리
 			DBUtil.executeClose(null, pstmt, conn);
@@ -151,8 +159,10 @@ public class LessonDAO {
 				flag = true;
 				System.out.println("별점을 갱신했습니다.");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
 		} finally {
 			//자원정리
 			DBUtil.executeClose(null, pstmt, conn);
@@ -196,8 +206,10 @@ public class LessonDAO {
 			}
 
 			System.out.println("----------------------------------");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
@@ -244,8 +256,10 @@ public class LessonDAO {
 			}
 
 			System.out.println("----------------------------------");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
@@ -275,8 +289,10 @@ public class LessonDAO {
 				flag = true;
 				System.out.println(name + " 강의를 삭제했습니다.");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("[데이터베이스 연결 오류]");
+		} catch (SQLException e) {
+			System.out.println("[잘못된 처리]");
 		} finally {
 			//자원정리
 			DBUtil.executeClose(null, pstmt, conn);

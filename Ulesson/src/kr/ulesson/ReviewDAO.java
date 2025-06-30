@@ -61,7 +61,7 @@ public class ReviewDAO {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			String sql = null;
-			
+			int cnt = 0;
 			try {
 				//JDBC 수행 1,2 단계
 				conn = DBUtil.getConnection();
@@ -79,7 +79,7 @@ public class ReviewDAO {
 				
 				if(rs.next()) {
 					do {
-						System.out.println("작성자: " + rs.getString("mem_name"));
+						System.out.println(++cnt + ". \n작성자: " + rs.getString("mem_name"));
 						System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 						System.out.println(rs.getString("rv_content"));
 						System.out.println("\t\t" + rs.getInt("rv_score") + "점");
@@ -195,7 +195,7 @@ public class ReviewDAO {
 			//JDBC 수행 1,2단계
 			conn = DBUtil.getConnection();
 			//SQL문 작성
-			sql = "UPDATE lesson SET les_score=(SELECT AVG(rv_score) FROM review WHERE les_num=?) WHERE les_num=?";
+			sql = "UPDATE lesson SET les_score=(SELECT NVL(AVG(rv_score),0) FROM review WHERE les_num=?) WHERE les_num=?";
 			//JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
 			//?에 데이터 바인딩

@@ -155,6 +155,7 @@ public class sectionDAO {
 
 			pstmt.setInt(1, lesNum);
 
+
 			//JDBC 수행 4단계
 			rs = pstmt.executeQuery();
 

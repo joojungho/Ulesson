@@ -5,43 +5,43 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class BoardService {
-    private static BoardDAO_User boardDAO;
-    private static BufferedReader br;
-    
-    public BoardService(BoardDAO_User boardDAO) {
-        this.boardDAO = boardDAO;
-        this.br = new BufferedReader(new InputStreamReader(System.in));
 
-
-       
-    }
-    
+	private BoardDAO_User boardDAO = new BoardDAO_User();
+	private String id = "admin";
+	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
-    //게시글 출력메서드(카테고리 검사)
-	public static void selectBoardInCategory(int bdctNum) {
-        while (true) {
-            try {
-                System.out.println("------------------------------------------");
-                System.out.print("게시글 번호를 선택하세요: ");
-                int bdNum = Integer.parseInt(br.readLine()); // 게시글 번호 입력
+	// 게시물 확인 메서드
+	public void BoardByCategory(int bdNum,int bdctNum) throws IOException{
+		while (true) {
+			try {
+				System.out.println("------------------------------------------");
+				System.out.print("게시글 번호를 선택하세요: ");
+				bdNum = Integer.parseInt(br.readLine()); // 게시글 번호 입력
 
-                // 선택한 게시글이 해당 카테고리에 속하는지 확인
-                if (boardDAO.isBoardExistInCategory(bdctNum, bdNum)) {
-                    // 게시글이 선택된 카테고리에 속하면 게시글 출력
-                    boardDAO.selectBoardDetail(bdNum);
-                    break; // 게시글이 유효하면 종료
-                } else {
-                    System.out.println("선택한 게시글은 해당 카테고리에 없습니다. 다시 선택해주세요.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-            } catch (IOException e) {
-                System.out.println("입력 오류가 발생했습니다. 다시 시도해주세요.");
-            }
-        }
-    }
+				// 선택한 게시글이 해당 카테고리에 속하는지 확인
+				if (boardDAO.isBoardExistInCategory(bdctNum, bdNum)) {
+					// 게시글이 선택된 카테고리에 속하면 게시글 출력
+					boardDAO.selectBoardDetail(bdNum);
+					break; // 게시글이 유효하면 종료
+				} else {
+					System.out.println("선택한 게시글은 해당 카테고리에 없습니다. 다시 선택해주세요.");
+				}
+
+			} catch (NumberFormatException e) {
+				System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.222");
+			}
+		}
+		
+	}
 	//카테고리 선택 메서드
-	public void SelectBoard(int bdCategory) throws IOException {
+	public void SelectCategory() throws IOException {
+
+		// 글쓰기
+
+		BoardCategoryDAO.selectAllBoardCategories();
+
+		int bdCategory =0;
+
 		while(true) {
 			System.out.println("------------------------------------------");
 			System.out.print("카테고리 번호 선택 : ");                              
@@ -57,11 +57,37 @@ public class BoardService {
 				System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
 			}
 		}
+		System.out.print("게시글 제목 : ");
+		String bdTitle = br.readLine();
+		System.out.print("게시글 내용 : ");
+		String bdContent = br.readLine();
+
+		boardDAO.insertBoard(id, bdContent, bdCategory, bdTitle);
+
+	
 	}
-	//상세글 확인 메서드
-	public void SelectBoardDetail(int bdNum) throws NumberFormatException, IOException {
+	//댓글 추가 메서드
+	public void insertComment(int bdNum ) throws IOException {
 		
-		int bdctNum = Integer.parseInt(br.readLine());
+		// 댓글 추가						
+		System.out.println("------------------------------------------");
+		System.out.print("댓글을 작성하시겠습니까?(y/n) >");
+		String answer = br.readLine();
+
+		if (answer.matches("[Yy]")) {
+			// 댓글 내용 입력
+			System.out.println("------------------------------------------");
+			System.out.print("댓글 내용을 입력하세요: ");
+			String cmtContent = br.readLine();
+
+			// 댓글 추가
+			new BoardCommentDAO().insertBoardComment(id, cmtContent, bdNum);
+		}
+	}
+
+	
+	//상세글 보기 메서드
+	public int SelectBoardDetail(int bdNum, int bdctNum) {
 		while (true) {
 			try {
 				System.out.println("------------------------------------------");
@@ -80,45 +106,38 @@ public class BoardService {
 					} else {
 						// 선택된 카테고리에 속한 게시글만 출력
 						boardDAO.selectBoardByCategory(bdctNum);
-						BoardService.selectBoardInCategory(bdctNum);
-						break; // 카테고리가 유효하고 게시글을 선택한 경우 종료
+
+						while (true) {
+							try {
+								System.out.println("------------------------------------------");
+								System.out.print("게시글 번호를 선택하세요: ");
+								bdNum = Integer.parseInt(br.readLine()); // 게시글 번호 입력
+
+								// 선택한 게시글이 해당 카테고리에 속하는지 확인
+								if (boardDAO.isBoardExistInCategory(bdctNum, bdNum)) {
+									// 게시글이 선택된 카테고리에 속하면 게시글 출력
+									boardDAO.selectBoardDetail(bdNum);									 
+									return bdNum;
+								} else {
+									System.out.println("선택한 게시글은 해당 카테고리에 없습니다. 다시 선택해주세요.");
+								}
+
+							} catch (NumberFormatException e) {
+								System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
+							}
+						}
+						//break; // 카테고리가 유효하고 게시글을 선택한 경우 종료
 					}
 				}   
 			} catch (Exception e) {
 				System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
 			}
+		
+			
 		}
 		
+
+		
 	}
-	
-	public void UpdateCategory(int bdct_Num) {
-		BoardMain_User boardMain = new BoardMain_User();
-		int bdNum = 0;
-		bdct_Num = 0;
-		while (true) {
-			try {
-				System.out.println("---------------------------------------------");
-				System.out.print("수정할 카테고리 번호 : ");
-				bdct_Num = Integer.parseInt(br.readLine());
+}
 
-				if (!boardDAO.isBDCT_numExist(bdct_Num)) {
-					System.out.println("유효하지 않은 카테고리 번호입니다. 다시 입력해주세요.");
-				} else {
-					boardDAO.updateBoardCategory(bdNum, bdct_Num);
-					System.out.println("카테고리가 수정되었습니다.");
-					 
-			        boardMain.callMenu();
-					
-					return;
-				}
-			} catch (Exception e) {
-				System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-			}
-		}
-
-	}
-
-	
-	
-
-}//class

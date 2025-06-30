@@ -60,8 +60,8 @@ public class UlessonMain {
 			}
 		}
 	}
-//	public static void main(String[] args) {
-//		new UlessonMain();
-//	}
+public static void main(String[] args) {
+		new UlessonMain();
+	}
 
 }
